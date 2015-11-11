@@ -23,10 +23,10 @@
 
 #include <fstream>
 
-///////////////////////////////////////////////////////////////////////////////
-//  helper function reading a file into a string
-///////////////////////////////////////////////////////////////////////////////
-inline std::string
+/**
+ * helper function reading a file into a string
+ */
+ inline std::string
 read_from_file(char const* infile)
 {
     std::ifstream instream(infile);
@@ -39,19 +39,19 @@ read_from_file(char const* infile)
         std::istreambuf_iterator<char>());
 }
 
-///////////////////////////////////////////////////////////////////////////////
-//  helper function to concatenate char range to the given string.
-///////////////////////////////////////////////////////////////////////////////
+/**
+ * helper function to concatenate char range to the given string.
+ */
 template <typename ForwardTraversalIterator>
 std::string & operator+=(std::string & lhs, const boost::iterator_range<ForwardTraversalIterator> & range) {
     lhs += std::string(range.begin(), range.end());
     return lhs;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-//  convert escape char to its given value or remove '\' when escape sequence
-//  is not specific.
-///////////////////////////////////////////////////////////////////////////////
+/**
+ * convert escape char to its given value or remove '\' when escape sequence is
+ * not specific.
+ */
 template <typename ForwardTraversalIterator>
 const char escape_sequence(const boost::iterator_range<ForwardTraversalIterator> & sequence) {
     const char c = sequence.back();
@@ -65,9 +65,9 @@ const char escape_sequence(const boost::iterator_range<ForwardTraversalIterator>
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-//  convert escape unicode codepoint to its utf-8 character representation.
-///////////////////////////////////////////////////////////////////////////////
+/**
+ * convert escape unicode codepoint to its utf-8 character representation.
+ */
 template <typename ForwardTraversalIterator>
 std::string to_utf8(const boost::iterator_range<ForwardTraversalIterator> & code_point)
 {
@@ -99,11 +99,11 @@ std::string to_utf8(const boost::iterator_range<ForwardTraversalIterator> & code
     return converterX.to_bytes(std::char_traits<wchar_t>::to_char_type(value));
 }
 
-///////////////////////////////////////////////////////////////////////////////
-//  in this example the struct 'properties' is used as a functor collecting all
-//  key-value properties in the analyzed input sequence by identifying the
-//  matched tokens as passed from the lexer.
-///////////////////////////////////////////////////////////////////////////////
+/**
+ * in this example the struct 'properties' is used as a functor collecting all
+ * key-value properties in the analyzed input sequence by identifying the
+ * matched tokens as passed from the lexer.
+ */
 struct properties
 {
     // this is an implementation detail specific to boost::bind and doesn't show 
@@ -159,14 +159,14 @@ struct properties
 };
 //]
 
-///////////////////////////////////////////////////////////////////////////////
-//  the main function simply loads the given file into memory (as a
-//  `std::string`), instantiates an instance of the token definition template
-//  using the correct iterator type (`word_count_tokens<char const*>`),
-//  and finally calls `lex::tokenize`, passing an instance of the counter function
-//  object. The return value of `lex::tokenize()` will be `true` if the
-//  whole input sequence has been successfully tokenized, and `false` otherwise.
-///////////////////////////////////////////////////////////////////////////////
+/**
+ * the main function simply loads the given file into memory (as a
+ * `std::string`), instantiates an instance of the token definition template
+ * using the correct iterator type (`word_count_tokens<char const*>`),
+ * and finally calls `lex::tokenize`, passing an instance of the counter function
+ * object. The return value of `lex::tokenize()` will be `true` if the
+ * whole input sequence has been successfully tokenized, and `false` otherwise.
+ */
 int main(int argc, char* argv[])
 {
     // read input from the given file
