@@ -179,11 +179,29 @@ int main(int argc, char* argv[]) {
     }
     // unicode key
     {
+        BOOST_TEST(test("\\u03b6",
+                  {
+                       { "\\u03b6"       , ID_KEY_UNICODE}
+                  }));
+        BOOST_TEST(test("\\u03b6 ",
+                  {
+                       { "\\u03b6"       , ID_KEY_UNICODE},
+                       { " "             , ID_SEPARATOR_SPACES}
+                  }));
         BOOST_TEST(test("\\u03b6=epsilon",
                   {
                        { "\\u03b6"       , ID_KEY_UNICODE},
                        { "="             , ID_SEPARATOR_EQUAL},
                        { "epsilon"       , ID_VALUE_CHARS}
+                  }));
+    }
+    // bad unicode key
+    {
+        BOOST_TEST(test("\\u000=epsilon",
+                  {
+                       { "\\u000"       , ID_BAD_UNICODE},
+                       { "="            , ID_SEPARATOR_EQUAL},
+                       { "epsilon"      , ID_VALUE_CHARS}
                   }));
     }
     // escape char key
