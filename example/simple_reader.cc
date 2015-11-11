@@ -1,7 +1,10 @@
-//  Copyright (c) 2001-2010 Hartmut Kaiser
-// 
-//  Distributed under the Boost Software License, Version 1.0. (See accompanying 
-//  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+/*=============================================================================
+  Copyright (c) 2015 glywk
+  https://github.com/glywk
+  
+  Distributed under the Boost Software License, Version 1.0. (See accompanying
+  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================*/
 
 //  its purpose is to simply read a java like property file and to print the
 //  key-value pairs on the standard output. This example also substitute escape
