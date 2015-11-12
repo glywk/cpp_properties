@@ -87,16 +87,24 @@ int main(int argc, char* argv[]) {
                        {" "            , ID_COMMENT_SPACES},
                        {"comment"      , ID_COMMENT_CHARS}
                   }));
-        BOOST_TEST(test("   #comment ", {
-                         {"   "         , ID_SPACES},
+        BOOST_TEST(test("   #comment ",
+                  {
+                       {"   "         , ID_SPACES},
                        {"#"           , ID_COMMENT_SHARP},
                        {"comment"     , ID_COMMENT_CHARS},
                        {" "           , ID_COMMENT_SPACES}
                   }));
-        BOOST_TEST(test("#\\ ", {
+        BOOST_TEST(test("#\\ ",
+                  {
                        {"#"   , ID_COMMENT_SHARP},
                        {"\\"  , ID_COMMENT_CHARS},
                        {" "   , ID_COMMENT_SPACES}
+                  }));
+        BOOST_TEST(test("#\\\n",
+                  {
+                       {"#"    , ID_COMMENT_SHARP},
+                       {"\\"   , ID_COMMENT_CHARS},
+                       {"\n"   , ID_COMMENT_LF}
                   }));
     }
 
@@ -154,39 +162,52 @@ int main(int argc, char* argv[]) {
     }
     // key line break
     {
+        BOOST_TEST(test("k\\\n",
+                  {
+                       {"k"    , ID_KEY_CHARS},
+                       {"\\\n" , ID_KEY_LINE_BREAK_LF}
+                  }));
+        BOOST_TEST(test("k\\\n"
+                        "1"    ,
+                  {
+                       {"k"    , ID_KEY_CHARS},
+                       {"\\\n" , ID_KEY_LINE_BREAK_LF},
+                       {"1"    , ID_KEY_CHARS}
+                  }));
         BOOST_TEST(test(" k\\\n"
                         " 1"   ,
                   {
                        {" "    , ID_SPACES},
                        {"k"    , ID_KEY_CHARS },
-                       {"\\\n ", ID_KEY_LINE_BREAK_LF },
+                       {"\\\n ", ID_KEY_LINE_BREAK_LF},
                        {"1"    , ID_KEY_CHARS }
                   }));
         BOOST_TEST(test(" k\\\r"
                         " 1"   , {
                        {" "    , ID_SPACES },
                        {"k"    , ID_KEY_CHARS },
-                       {"\\\r ", ID_KEY_LINE_BREAK_CR },
+                       {"\\\r ", ID_KEY_LINE_BREAK_CR},
                        {"1"    , ID_KEY_CHARS }
                   }));
         BOOST_TEST(test(" k\\\r\n"
                         " 1"     , {
-                       {" "      , ID_SPACES },
-                       {"k"      , ID_KEY_CHARS },
-                       {"\\\r\n ", ID_KEY_LINE_BREAK_EOL },
-                       {"1"      , ID_KEY_CHARS }
+                       {" "      , ID_SPACES},
+                       {"k"      , ID_KEY_CHARS},
+                       {"\\\r\n ", ID_KEY_LINE_BREAK_EOL},
+                       {"1"      , ID_KEY_CHARS}
                   }));
     }
     // unicode key
     {
         BOOST_TEST(test("\\u03b6",
                   {
-                       { "\\u03b6"       , ID_KEY_UNICODE}
+                       {"\\u03b6", ID_KEY_UNICODE}
                   }));
-        BOOST_TEST(test("\\u03b6 ",
+        BOOST_TEST(test(" \\u03b6 ",
                   {
-                       { "\\u03b6"       , ID_KEY_UNICODE},
-                       { " "             , ID_SEPARATOR_SPACES}
+                       {" "        , ID_SPACES},
+                       {"\\u03b6"  , ID_KEY_UNICODE},
+                       {" "        , ID_SEPARATOR_SPACES}
                   }));
         BOOST_TEST(test("\\u03b6=epsilon",
                   {
@@ -197,6 +218,16 @@ int main(int argc, char* argv[]) {
     }
     // bad unicode key
     {
+        BOOST_TEST(test("\\u000",
+                  {
+                       { "\\u000", ID_BAD_UNICODE},
+                  }));
+        BOOST_TEST(test(" \\u000 ",
+                  {
+                       {" "      , ID_SPACES},
+                       {"\\u000" , ID_BAD_UNICODE},
+                       {" "      , ID_SEPARATOR_SPACES}
+                  }));
         BOOST_TEST(test("\\u000=epsilon",
                   {
                        { "\\u000"       , ID_BAD_UNICODE},
@@ -213,43 +244,85 @@ int main(int argc, char* argv[]) {
                        {"\\="       , ID_KEY_ESCAPE_CHAR}
                   }));
     }
+    // separator
+    {
+        BOOST_TEST(test("k ",
+                  {
+                       {"k" , ID_KEY_CHARS},
+                       {" " , ID_SEPARATOR_SPACES}
+                  }));
+        BOOST_TEST(test("k=",
+                  {
+                      {"k"  , ID_KEY_CHARS},
+                      {"="  , ID_SEPARATOR_EQUAL}
+                  }));
+        BOOST_TEST(test("k= ",
+                  {
+                      {"k"  , ID_KEY_CHARS},
+                      {"="  , ID_SEPARATOR_EQUAL},
+                      {" "  , ID_VALUE_SPACES}
+                  }));
+        BOOST_TEST(test("k==",
+                  {
+                      {"k"  , ID_KEY_CHARS},
+                      {"="  , ID_SEPARATOR_EQUAL},
+                      {"="  , ID_VALUE_CHARS}
+                  }));
+        BOOST_TEST(test("k:",
+                  {
+                      {"k"  , ID_KEY_CHARS},
+                      {":"  , ID_SEPARATOR_COLON}
+                  }));
+        BOOST_TEST(test("k::",
+                  {
+                      {"k"  , ID_KEY_CHARS},
+                      {":"  , ID_SEPARATOR_COLON},
+                      {":"  , ID_VALUE_CHARS}
+                  }));
+        BOOST_TEST(test("k:=",
+                  {
+                      {"k"  , ID_KEY_CHARS},
+                      {":"  , ID_SEPARATOR_COLON},
+                      {"="  , ID_VALUE_CHARS}
+                  }));
+
+    }
     // separator line break
     {
         BOOST_TEST(test("k \\\n"
                         "v"    , {
-                       {"k"    , ID_KEY_CHARS },
-                       {" "    , ID_SEPARATOR_SPACES },
-                       {"\\\n" , ID_SEPARATOR_LINE_BREAK_LF },
-                       {"v"    , ID_VALUE_CHARS }
+                       {"k"    , ID_KEY_CHARS},
+                       {" "    , ID_SEPARATOR_SPACES},
+                       {"\\\n" , ID_SEPARATOR_LINE_BREAK_LF},
+                       {"v"    , ID_VALUE_CHARS}
                   }));
         BOOST_TEST(test("k \\\r"
                         ":v"    , {
-                       {"k"    , ID_KEY_CHARS },
-                       {" "    , ID_SEPARATOR_SPACES },
-                       {"\\\r" , ID_SEPARATOR_LINE_BREAK_CR },
-                       {":"    , ID_SEPARATOR_COLON },
-                       {"v"    , ID_VALUE_CHARS }
+                       {"k"    , ID_KEY_CHARS},
+                       {" "    , ID_SEPARATOR_SPACES},
+                       {"\\\r" , ID_SEPARATOR_LINE_BREAK_CR},
+                       {":"    , ID_SEPARATOR_COLON},
+                       {"v"    , ID_VALUE_CHARS}
                   }));
         BOOST_TEST(test("k \\\r\n"
                         "=v"     ,
                    {
-                       {"k"      , ID_KEY_CHARS },
-                       {" "      , ID_SEPARATOR_SPACES },
-                       {"\\\r\n" , ID_SEPARATOR_LINE_BREAK_EOL },
-                       {"="      , ID_SEPARATOR_EQUAL },
-                       {"v"      , ID_VALUE_CHARS }
+                       {"k"      , ID_KEY_CHARS},
+                       {" "      , ID_SEPARATOR_SPACES},
+                       {"\\\r\n" , ID_SEPARATOR_LINE_BREAK_EOL},
+                       {"="      , ID_SEPARATOR_EQUAL},
+                       {"v"      , ID_VALUE_CHARS}
                   }));
         BOOST_TEST(test(" k1 \\\n"
                         " v"    ,
                   {
-                       {" "     , ID_SPACES },
-                       {"k1"    , ID_KEY_CHARS },
-                       {" "     , ID_SEPARATOR_SPACES },
-                       {"\\\n " , ID_SEPARATOR_LINE_BREAK_LF },
-                       {"v"     , ID_VALUE_CHARS }
+                       {" "     , ID_SPACES},
+                       {"k1"    , ID_KEY_CHARS},
+                       {" "     , ID_SEPARATOR_SPACES},
+                       {"\\\n " , ID_SEPARATOR_LINE_BREAK_LF},
+                       {"v"     , ID_VALUE_CHARS}
                   }));
     }
-    // separator
     // value
     {
         BOOST_TEST(test("k1::v:",
@@ -261,8 +334,8 @@ int main(int argc, char* argv[]) {
     }
     // value separator
     // escape char value
-    // bad unicode
-    // unicode
+    // bad unicode value
+    // unicode value
     {
         BOOST_TEST(test("\\u123z=\\u12", {
                          {"\\u123"       , ID_BAD_UNICODE},
