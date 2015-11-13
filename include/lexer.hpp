@@ -1,3 +1,10 @@
+//=============================================================================
+// Copyright (c) 2015 glywk
+// https://github.com/glywk
+// 
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//=============================================================================
 #ifndef CPP_PROPETIES_LEXER_HPP
 #define CPP_PROPETIES_LEXER_HPP
 
