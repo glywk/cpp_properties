@@ -97,9 +97,9 @@ std::string to_utf8(const boost::iterator_range<ForwardTraversalIterator> & code
     }
 
     typedef std::codecvt_utf8<wchar_t> convert_typeX;
-    std::wstring_convert<convert_typeX, wchar_t> converterX;
+    std::wstring_convert<convert_typeX, wchar_t> utf8_converter;
 
-    return converterX.to_bytes(std::char_traits<wchar_t>::to_char_type(value));
+    return utf8_converter.to_bytes(std::char_traits<wchar_t>::to_char_type(value));
 }
 
 /**
