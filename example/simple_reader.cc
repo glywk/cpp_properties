@@ -135,6 +135,9 @@ struct properties
         case ID_KEY_CR:
         case ID_KEY_LF:
         case ID_KEY_EOL:
+        case ID_SEPARATOR_CR:
+        case ID_SEPARATOR_LF:
+        case ID_SEPARATOR_EOL:
             properties[current.first] = std::string();
             current.first = std::string();
             break;
