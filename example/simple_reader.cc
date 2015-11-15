@@ -102,35 +102,68 @@ std::string to_utf8(const boost::iterator_range<ForwardTraversalIterator> & code
     return utf8_converter.to_bytes(std::char_traits<wchar_t>::to_char_type(value));
 }
 
+struct properties_actor_traits
+{
+    // type of properties container output
+    typedef std::map<std::string, std::string> properties_type;
+    // type of a key-value property
+    typedef std::pair<properties_type::key_type, properties_type::mapped_type> property_type;
+};
+
 /**
  * in this example the struct 'properties' is used as a functor collecting all
  * key-value properties in the analyzed input sequence by identifying the
  * matched tokens as passed from the lexer.
  */
-struct properties
+struct properties_visitor
 {
+    // type of properties container output
+    typedef properties_actor_traits::properties_type properties_type;
+    // type of a key-value property
+    typedef properties_actor_traits::property_type property_type;
+
+    properties_visitor(properties_type & properties_reference) : properties(properties_reference) {}
+
+    // finish to add current as reference.
+    properties_type & properties;
+
+    // the temporary property
+    property_type property;
+};
+
+/**
+ * in this example the struct 'properties' is used as a functor collecting all
+ * key-value properties in the analyzed input sequence by identifying the
+ * matched tokens as passed from the lexer.
+ */
+class properties_actor
+{
+  public:
     // this is an implementation detail specific to boost::bind and doesn't show 
     // up in the documentation
     typedef bool result_type;
 
     // type of properties container output
-    typedef std::map<std::string, std::string> properties_type;
+    typedef properties_actor_traits::properties_type properties_type;
     // type of a key-value property
-    typedef std::pair<properties_type::key_type, properties_type::mapped_type> property_type;
+    typedef properties_actor_traits::property_type property_type;
+
+    properties_actor(properties_type & properties_reference, property_type & property_reference) :
+        properties(properties_reference), property(property_reference) {}
 
     // the function operator gets called for each of the matched tokens
     template <typename Token>
-    bool operator()(Token const& token, properties_type & properties, property_type & current) const
+    bool operator()(Token const& token) const
     {
         switch (token.id()) {
         case ID_KEY_CHARS:
-            current.first += token.value();
+            property.first += token.value();
             break;
         case ID_KEY_ESCAPE_CHAR:
-            current.first += escape_sequence(token.value());
+            property.first += escape_sequence(token.value());
             break;
         case ID_KEY_UNICODE:
-            current.first += to_utf8(token.value());
+            property.first += to_utf8(token.value());
             break;
         case ID_KEY_CR:
         case ID_KEY_LF:
@@ -138,32 +171,43 @@ struct properties
         case ID_SEPARATOR_CR:
         case ID_SEPARATOR_LF:
         case ID_SEPARATOR_EOL:
-            properties[current.first] = std::string();
-            current.first = std::string();
+            properties[property.first] = std::string();
+            property.first = std::string();
             break;
         case ID_VALUE_SPACES:
         case ID_VALUE_CHARS:
-            current.second += token.value();
+            property.second += token.value();
             break;
         case ID_VALUE_ESCAPE_CHAR:
-            current.second += escape_sequence(token.value());
+            property.second += escape_sequence(token.value());
             break;
         case ID_VALUE_UNICODE:
-            current.second += to_utf8(token.value());
+            property.second += to_utf8(token.value());
             break;
         case ID_VALUE_CR:
         case ID_VALUE_LF:
         case ID_VALUE_EOL:
-            properties[current.first] = current.second;
-            current.first = std::string();
-            current.second = std::string();
+            properties[property.first] = property.second;
+            property.first = std::string();
+            property.second = std::string();
             break;
         }
 
         return true;        // always continue to tokenize
     }
+
+  private:
+      properties_type & properties;
+      property_type & property;
 };
-//]
+
+/**
+ * helper function to build a property actor based on a visitor fields to hide
+ * details.
+ */
+properties_actor && make_actor(properties_visitor & visitor) {
+    return std::move(properties_actor(visitor.properties, visitor.property));
+}
 
 /**
  * the main function simply loads the given file into memory (as a
@@ -186,11 +230,11 @@ int main(int argc, char* argv[])
     char const* first = str.c_str();
     char const* last = &first[str.size()];
 
-    properties::properties_type cpp_properties;
-    properties::property_type property;
+    properties_visitor::properties_type cpp_properties;
+    properties_visitor visitor(cpp_properties);
+    properties_actor actor = make_actor(visitor);
 
-    bool success = lex::tokenize(first, last, lexer, 
-        boost::bind(properties(), _1, boost::ref(cpp_properties), boost::ref(property)));
+    bool success = lex::tokenize(first, last, lexer, boost::bind(actor, _1));
 
     // print results
     if (success) {
