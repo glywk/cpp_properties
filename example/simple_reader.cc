@@ -13,20 +13,18 @@
 // #define BOOST_SPIRIT_LEXERTL_DEBUG
 
 #include <boost/config/warning_disable.hpp>
-#include <boost/bind.hpp>
-#include <boost/ref.hpp>
 #include <boost/spirit/include/lex_lexertl.hpp>
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <codecvt>
-#include <map> 
+#include <map>
+#include <functional>
 
 #include <lexer.hpp>
 
-#include <fstream>
-
-/**
+/*!
  * helper function reading a file into a string
  */
  inline std::string
@@ -42,7 +40,7 @@ read_from_file(char const* infile)
         std::istreambuf_iterator<char>());
 }
 
-/**
+/*!
  * helper function to concatenate char range to the given string.
  */
 template <typename ForwardTraversalIterator>
@@ -51,7 +49,7 @@ std::string & operator+=(std::string & lhs, const boost::iterator_range<ForwardT
     return lhs;
 }
 
-/**
+/*!
  * convert escape char to its given value or remove '\' when escape sequence is
  * not specific.
  */
@@ -68,7 +66,7 @@ const char escape_sequence(const boost::iterator_range<ForwardTraversalIterator>
     }
 }
 
-/**
+/*!
  * convert escape unicode codepoint to its utf-8 character representation.
  */
 template <typename ForwardTraversalIterator>
@@ -102,6 +100,9 @@ std::string to_utf8(const boost::iterator_range<ForwardTraversalIterator> & code
     return utf8_converter.to_bytes(std::char_traits<wchar_t>::to_char_type(value));
 }
 
+/*!
+ * the key-value property traits to provide to the abstract syntax tree visitor
+ */
 struct properties_actor_traits
 {
     // type of properties container output
@@ -110,7 +111,7 @@ struct properties_actor_traits
     typedef std::pair<properties_type::key_type, properties_type::mapped_type> property_type;
 };
 
-/**
+/*!
  * in this example the struct 'properties' is used as a functor collecting all
  * key-value properties in the analyzed input sequence by identifying the
  * matched tokens as passed from the lexer.
@@ -131,10 +132,10 @@ struct properties_visitor
     property_type property;
 };
 
-/**
- * in this example the struct 'properties' is used as a functor collecting all
- * key-value properties in the analyzed input sequence by identifying the
- * matched tokens as passed from the lexer.
+/*!
+ * in this example the class 'properties_actor' is used as a functor for 
+ * collecting all key-value properties in the analyzed input sequence by
+ * identifying the matched tokens as passed from the lexer.
  */
 class properties_actor
 {
@@ -201,7 +202,7 @@ class properties_actor
       property_type & property;
 };
 
-/**
+/*!
  * helper function to build a property actor based on a visitor fields to hide
  * details.
  */
@@ -209,13 +210,13 @@ properties_actor && make_actor(properties_visitor & visitor) {
     return std::move(properties_actor(visitor.properties, visitor.property));
 }
 
-/**
+/*!
  * the main function simply loads the given file into memory (as a
  * `std::string`), instantiates an instance of the token definition template
- * using the correct iterator type (`word_count_tokens<char const*>`),
- * and finally calls `lex::tokenize`, passing an instance of the counter function
- * object. The return value of `lex::tokenize()` will be `true` if the
- * whole input sequence has been successfully tokenized, and `false` otherwise.
+ * using the correct iterator type and finally calls `lex::tokenize`, passing
+ * an instance of the properties collector action object. The return value of
+ * `lex::tokenize()` will be `true` if the whole input sequence has been
+ * successfully tokenized, and `false` otherwise.
  */
 int main(int argc, char* argv[])
 {
@@ -234,7 +235,9 @@ int main(int argc, char* argv[])
     properties_visitor visitor(cpp_properties);
     properties_actor actor = make_actor(visitor);
 
-    bool success = lex::tokenize(first, last, lexer, boost::bind(actor, _1));
+    bool success = lex::tokenize(first, last, lexer, [&actor](auto token) {
+        return actor(token);
+    });
 
     // print results
     if (success) {
