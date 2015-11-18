@@ -404,7 +404,7 @@ int main(int argc, char* argv[]) {
                        {"="          , ID_SEPARATOR_EQUAL},
                        {" "          , ID_VALUE_SPACES},
                        {"\\u03b6"    , ID_VALUE_UNICODE},
-                       {" "          , ID_VALUE_CHARS}
+                       {" "          , ID_VALUE_SPACES}
                   }));
         BOOST_TEST(test("k=\\u03b6epsilon",
                   {
@@ -427,7 +427,7 @@ int main(int argc, char* argv[]) {
                        {"="         , ID_SEPARATOR_EQUAL},
                        {" "         , ID_VALUE_SPACES},
                        {"\\u000"    , ID_BAD_UNICODE},
-                       {" "         , ID_VALUE_CHARS}
+                       {" "         , ID_VALUE_SPACES}
                   }));
         BOOST_TEST(test("k=\\u000giga",
                   {

@@ -39,7 +39,6 @@ class tokenizer {
         name[ID_LINE_BREAK_CR]            = "ID_LINE_BREAK_CR";
         name[ID_LINE_BREAK_LF]            = "ID_LINE_BREAK_LF";
         name[ID_LINE_BREAK_EOL]           = "ID_LINE_BREAK_EOL";
-        name[ID_BAD_SEPARATOR]            = "ID_BAD_SEPARATOR";
         name[ID_BAD_UNICODE]              = "ID_BAD_UNICODE";
         name[ID_COMMENT_SHARP]            = "ID_COMMENT_SHARP";
         name[ID_COMMENT_EXCLAMATION]      = "ID_COMMENT_EXCLAMATION";

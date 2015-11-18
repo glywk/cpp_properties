@@ -19,7 +19,6 @@ ID_EOL,
 ID_LINE_BREAK_CR,
 ID_LINE_BREAK_LF,
 ID_LINE_BREAK_EOL,
-ID_BAD_SEPARATOR,
 ID_BAD_UNICODE,
 ID_COMMENT_SHARP,
 ID_COMMENT_EXCLAMATION,
@@ -98,9 +97,8 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
             ("first_key"   , "[^ \\f\\t\\r\\n\\\\=:#!][^ \\f\\t\\r\\n\\\\=:]*")
             ("key"         , "[^ \\f\\t\\r\\n\\\\=:]+")
 
-            ("blank_value" , "[^ \\f\\t\\r\\n\\\\=:][^\\r\\n\\\\]*")
-            ("first_value" , "[^ \\f\\t\\r\\n\\\\][^\\r\\n\\\\]*")
-            ("value"       , "[^\\r\\n\\\\]+")
+            ("blank_value" , "[^ \\f\\t\\r\\n\\\\=:][^ \\f\\t\\r\\n\\\\]*")
+            ("value" , "[^ \\f\\t\\r\\n\\\\]+")
 
             ("unicode"     , "\\\\u[0-9a-fA-F]{4}")
             ("bad_unicode" , "\\\\u[0-9a-fA-F]{0,3}")
@@ -196,7 +194,7 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
 
         this->self("SEPARATOR", "VALUE").add
             ("{spaces}"      , ID_VALUE_SPACES)
-            ("{first_value}" , ID_VALUE_CHARS)
+            ("{value}"       , ID_VALUE_CHARS)
             ("{escape}"      , ID_VALUE_ESCAPE_CHAR)
             ("{unicode}"     , ID_VALUE_UNICODE)
             ("{lb_cr}"       , ID_VALUE_LINE_BREAK_CR)
@@ -213,6 +211,7 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
         ;
 
         this->self("VALUE").add
+            ("{spaces}"      , ID_VALUE_SPACES)
             ("{value}"       , ID_VALUE_CHARS)
             ("{escape}"      , ID_VALUE_ESCAPE_CHAR)
             ("{unicode}"     , ID_VALUE_UNICODE)
