@@ -118,7 +118,7 @@ class tokenizer {
             ++citer_expected;
         }
         if (iter == end) {
-            std::cout << "*** Debug: les " << i << " token(s) sont passe(s)\n";
+            std::cout << "*** Debug: " << i << " token(s) found\n";
             if (citer_expected != cend_expected) {
                 std::cout << "missing expected tokens\n"; 
                 return false;

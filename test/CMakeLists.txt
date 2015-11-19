@@ -1,6 +1,14 @@
 include_directories(}
         ${cpp_properties_SOURCE_DIR}/test
 		)
+#define a macro to simplify declare and adding tests
+macro (declare_test name)
+  add_executable(${name} ${name}.cc)
+  add_test(${name} ${name})
+endmacro (declare_test)
+
 # Test cases
-add_executable(test_lexer test_lex.cc)
-add_test(test_lexer test_lexer)
+declare_test(test_comment)
+declare_test(test_key)
+declare_test(test_separator)
+declare_test(test_value)
