@@ -24,13 +24,17 @@
 
 #include <lexer.hpp>
 
+namespace lex = boost::spirit::lex;
+namespace cp = cpp_properties;
+using namespace cp::token;
+
 // define macro for callback member function
 #define CALL_MEMBER_FN(member_function)  ((*this).*(member_function))
 
 /*!
  * helper function reading a file into a string
  */
- inline std::string
+inline std::string
 read_from_file(char const* infile)
 {
     std::ifstream instream(infile);
@@ -133,10 +137,18 @@ public:
         property(none),
         current_reference(&properties_actor::allocate) {}
 
+    /*!
+     * store the current property and change state to prepare
+     * the next property read.
+     */
     void push_back() {
         current_reference = &properties_actor::allocate;
     }
 
+    /*!
+     * create the current property pair to populate and change state to
+     * return the current reference.
+     */
     property_type & current() {
         return CALL_MEMBER_FN(current_reference)();
     }
@@ -262,7 +274,7 @@ template<
 >
 bool tokenize_and_parse(char const* first, char const* last, typename Traits::properties_type & cpp_properties) {
     // create the token definition instance needed to invoke the lexical analyzer
-    cpp_properties_lexer<lex::lexertl::lexer<> > lexer;
+    cp::cpp_properties_lexer<lex::lexertl::lexer<> > lexer;
 
     Actor actor(cpp_properties);
     Action action = make_action(actor);

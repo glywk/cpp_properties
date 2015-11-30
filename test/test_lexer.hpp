@@ -21,6 +21,10 @@
 using std::list;
 using std::string;
 
+namespace lex = boost::spirit::lex;
+namespace cp = cpp_properties;
+using namespace cp::token;
+
 struct expected_token {
     int id;
     string value;
@@ -92,7 +96,7 @@ class tokenizer {
         char const* first = text.c_str();
         char const* last = &first[text.size()];
 
-        cpp_properties_lexer<lexer_type> lexer;
+        cp::cpp_properties_lexer<lexer_type> lexer;
         lexer_type::iterator_type iter = lexer.begin(first, last);
         lexer_type::iterator_type end = lexer.end();
         

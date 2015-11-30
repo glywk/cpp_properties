@@ -5,71 +5,69 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //=============================================================================
-#ifndef CPP_PROPETIES_LEXER_HPP
-#define CPP_PROPETIES_LEXER_HPP
+#ifndef CPP_PROPERTIES_LEXER_HPP
+#define CPP_PROPERTIES_LEXER_HPP
 
+namespace cpp_properties
+{
 namespace lex = boost::spirit::lex;
 
-enum token_id
+namespace token
 {
-ID_SPACES = 1000,
-ID_CR,
-ID_LF,
-ID_EOL,
-ID_LINE_BREAK_CR,
-ID_LINE_BREAK_LF,
-ID_LINE_BREAK_EOL,
-ID_BAD_UNICODE,
-ID_COMMENT_SHARP,
-ID_COMMENT_EXCLAMATION,
-ID_COMMENT_CHARS,
-ID_COMMENT_SPACES,
-ID_COMMENT_CR,
-ID_COMMENT_LF,
-ID_COMMENT_EOL,
-ID_KEY_CHARS,
-ID_KEY_ESCAPE_CHAR,
-ID_KEY_UNICODE,
-ID_KEY_CR,
-ID_KEY_LF,
-ID_KEY_EOL,
-ID_KEY_LINE_BREAK_CR,
-ID_KEY_LINE_BREAK_LF,
-ID_KEY_LINE_BREAK_EOL,
-ID_SEPARATOR_COLON,
-ID_SEPARATOR_EQUAL,
-ID_SEPARATOR_SPACES,
-ID_SEPARATOR_CR,
-ID_SEPARATOR_LF,
-ID_SEPARATOR_EOL,
-ID_SEPARATOR_LINE_BREAK_CR,
-ID_SEPARATOR_LINE_BREAK_LF,
-ID_SEPARATOR_LINE_BREAK_EOL,
-ID_VALUE_SPACES,
-ID_VALUE_CHARS,
-ID_VALUE_ESCAPE_CHAR,
-ID_VALUE_UNICODE,
-ID_VALUE_CR,
-ID_VALUE_LF,
-ID_VALUE_EOL,
-ID_VALUE_LINE_BREAK_CR,
-ID_VALUE_LINE_BREAK_LF,
-ID_VALUE_LINE_BREAK_EOL
-};
-
-struct set_lexer_state
-{
-    std::string state;
-    set_lexer_state(const std::string &a):state(a){}
-    template <class Iterator,class Context>
-    void operator () (Iterator const&, Iterator const&
-      , BOOST_SCOPED_ENUM(boost::spirit::lex::pass_flags)&, std::size_t
-      , Context &ctx) const
+    /*!
+     * the property tokens definition.
+     */
+    enum token_id
     {
-        ctx.set_state_name(state.c_str());
-    }
-};
+        ID_SPACES = 1000,
+        ID_CR,
+        ID_LF,
+        ID_EOL,
+        ID_LINE_BREAK_CR,
+        ID_LINE_BREAK_LF,
+        ID_LINE_BREAK_EOL,
+        ID_BAD_UNICODE,
+        ID_COMMENT_SHARP,
+        ID_COMMENT_EXCLAMATION,
+        ID_COMMENT_CHARS,
+        ID_COMMENT_SPACES,
+        ID_COMMENT_CR,
+        ID_COMMENT_LF,
+        ID_COMMENT_EOL,
+        ID_KEY_CHARS,
+        ID_KEY_ESCAPE_CHAR,
+        ID_KEY_UNICODE,
+        ID_KEY_CR,
+        ID_KEY_LF,
+        ID_KEY_EOL,
+        ID_KEY_LINE_BREAK_CR,
+        ID_KEY_LINE_BREAK_LF,
+        ID_KEY_LINE_BREAK_EOL,
+        ID_SEPARATOR_COLON,
+        ID_SEPARATOR_EQUAL,
+        ID_SEPARATOR_SPACES,
+        ID_SEPARATOR_CR,
+        ID_SEPARATOR_LF,
+        ID_SEPARATOR_EOL,
+        ID_SEPARATOR_LINE_BREAK_CR,
+        ID_SEPARATOR_LINE_BREAK_LF,
+        ID_SEPARATOR_LINE_BREAK_EOL,
+        ID_VALUE_SPACES,
+        ID_VALUE_CHARS,
+        ID_VALUE_ESCAPE_CHAR,
+        ID_VALUE_UNICODE,
+        ID_VALUE_CR,
+        ID_VALUE_LF,
+        ID_VALUE_EOL,
+        ID_VALUE_LINE_BREAK_CR,
+        ID_VALUE_LINE_BREAK_LF,
+        ID_VALUE_LINE_BREAK_EOL
+    };
+}
 
+/*!
+ * definition of the property lexer.
+ */
 template <typename Lexer>
 struct cpp_properties_lexer : lex::lexer<Lexer>
 {
@@ -230,4 +228,5 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
     }
 };
 
+}
 #endif
