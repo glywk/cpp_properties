@@ -77,7 +77,7 @@ const char escape_sequence(const boost::iterator_range<ForwardTraversalIterator>
  * convert escape unicode codepoint to its utf-8 character representation.
  */
 template <typename ForwardTraversalIterator>
-std::string to_utf8(const boost::iterator_range<ForwardTraversalIterator> & code_point)
+std::string decode_to_utf8(const boost::iterator_range<ForwardTraversalIterator> & code_point)
 {
     auto c = code_point.begin();
     // skip unicode escape sequence (\u)
@@ -105,6 +105,58 @@ std::string to_utf8(const boost::iterator_range<ForwardTraversalIterator> & code
     std::wstring_convert<convert_typeX, wchar_t> utf8_converter;
 
     return utf8_converter.to_bytes(std::char_traits<wchar_t>::to_char_type(value));
+}
+
+/*!
+ * convert iso 8859-1 string to its utf-8 character representation.
+ */
+template <typename CharT>
+void encode_latin1_to_utf8(const CharT code_point, std::basic_string<CharT> & utf8)
+{
+    /* code points above 0xff are impossible since iso 8859-1 is 8-bit encoded */
+    uint8_t ch = code_point;
+
+    if(ch < 0x80) {
+      utf8 += ch;
+    } else {
+      utf8 += 0xc0 | (ch & 0xc0) >> 6; // first byte
+      utf8 += 0x80 | (ch & 0x3f);      // last byte
+    }
+}
+
+/*!
+ * convert iso 8859-1 string to its utf-8 character representation.
+ */
+template <typename CharT>
+std::basic_string<CharT> encode_latin1_to_utf8(const CharT code_point)
+{
+    std::basic_string<CharT> utf8;
+    encode_latin1_to_utf8(code_point, utf8);
+    return utf8;
+}
+
+/*!
+ * convert escape char to its given value or remove '\' when escape sequence is
+ * not specific.
+ */
+template <typename ForwardTraversalIterator>
+std::string escape_sequence_to_utf8(const boost::iterator_range<ForwardTraversalIterator> & sequence) {
+    return encode_latin1_to_utf8(escape_sequence(sequence));
+}
+
+/*!
+ * convert iso 8859-1 string to its utf-8 character representation.
+ */
+template <typename ForwardTraversalIterator>
+std::string latin1_to_utf8(const boost::iterator_range<ForwardTraversalIterator> & latin1_string)
+{
+    std::string utf8;
+
+    for (auto code_point : latin1_string) {
+        encode_latin1_to_utf8(code_point, utf8);
+    }
+
+    return utf8;
 }
 
 /*!
@@ -209,13 +261,13 @@ class properties_action
     {
         switch (token.id()) {
         case ID_KEY_CHARS:
-            actor.current().first += token.value();
+            actor.current().first += latin1_to_utf8(token.value());
             break;
         case ID_KEY_ESCAPE_CHAR:
-            actor.current().first += escape_sequence(token.value());
+            actor.current().first += escape_sequence_to_utf8(token.value());
             break;
         case ID_KEY_UNICODE:
-            actor.current().first += to_utf8(token.value());
+            actor.current().first += decode_to_utf8(token.value());
             break;
         case ID_KEY_CR:
         case ID_KEY_LF:
@@ -232,13 +284,13 @@ class properties_action
             break;
         case ID_VALUE_SPACES:
         case ID_VALUE_CHARS:
-            actor.current().second += token.value();
+            actor.current().second += latin1_to_utf8(token.value());
             break;
         case ID_VALUE_ESCAPE_CHAR:
-            actor.current().second += escape_sequence(token.value());
+            actor.current().second += escape_sequence_to_utf8(token.value());
             break;
         case ID_VALUE_UNICODE:
-            actor.current().second += to_utf8(token.value());
+            actor.current().second += decode_to_utf8(token.value());
             break;
         case ID_VALUE_CR:
         case ID_VALUE_LF:
