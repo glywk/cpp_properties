@@ -50,9 +50,12 @@ read_from_file(char const* infile)
 /*!
  * helper function to concatenate char range to the given string.
  */
-template <typename ForwardTraversalIterator>
-std::string & operator+=(std::string & lhs, const boost::iterator_range<ForwardTraversalIterator> & range) {
-    lhs += std::string(range.begin(), range.end());
+template <
+	typename ForwardTraversalIterator,
+	typename CharT = boost::iterator_value<ForwardTraversalIterator>::type
+>
+std::basic_string<CharT> & operator+=(std::string & lhs, const boost::iterator_range<ForwardTraversalIterator> & range) {
+    lhs += std::basic_string<CharT>(range.begin(), range.end());
     return lhs;
 }
 
@@ -60,9 +63,12 @@ std::string & operator+=(std::string & lhs, const boost::iterator_range<ForwardT
  * convert escape char to its given value or remove '\' when escape sequence is
  * not specific.
  */
-template <typename ForwardTraversalIterator>
-const char escape_sequence(const boost::iterator_range<ForwardTraversalIterator> & sequence) {
-    const char c = sequence.back();
+template <
+	typename ForwardTraversalIterator,
+	typename CharT = boost::iterator_value<ForwardTraversalIterator>::type
+>
+const CharT escape_sequence(const boost::iterator_range<ForwardTraversalIterator> & sequence) {
+    const CharT c = sequence.back();
     switch (c) {
     case 't':  return '\t'; break;
     case 'r':  return '\r'; break;
@@ -76,8 +82,11 @@ const char escape_sequence(const boost::iterator_range<ForwardTraversalIterator>
 /*!
  * convert escape unicode codepoint to its utf-8 character representation.
  */
-template <typename ForwardTraversalIterator>
-std::string decode_to_utf8(const boost::iterator_range<ForwardTraversalIterator> & code_point)
+template <
+	typename ForwardTraversalIterator,
+	typename CharT = boost::iterator_value<ForwardTraversalIterator>::type
+>
+std::basic_string<CharT> decode_to_utf8(const boost::iterator_range<ForwardTraversalIterator> & code_point)
 {
     auto c = code_point.begin();
     // skip unicode escape sequence (\u)
@@ -139,18 +148,24 @@ std::basic_string<CharT> encode_latin1_to_utf8(const CharT code_point)
  * convert escape char to its given value or remove '\' when escape sequence is
  * not specific.
  */
-template <typename ForwardTraversalIterator>
-std::string escape_sequence_to_utf8(const boost::iterator_range<ForwardTraversalIterator> & sequence) {
+template <
+	typename ForwardTraversalIterator,
+	typename CharT = boost::iterator_value<ForwardTraversalIterator>::type
+>
+std::basic_string<CharT> escape_sequence_to_utf8(const boost::iterator_range<ForwardTraversalIterator> & sequence) {
     return encode_latin1_to_utf8(escape_sequence(sequence));
 }
 
 /*!
  * convert iso 8859-1 string to its utf-8 character representation.
  */
-template <typename ForwardTraversalIterator>
-std::string latin1_to_utf8(const boost::iterator_range<ForwardTraversalIterator> & latin1_string)
+template <
+	typename ForwardTraversalIterator,
+	typename CharT = boost::iterator_value<ForwardTraversalIterator>::type
+>
+std::basic_string<CharT> latin1_to_utf8(const boost::iterator_range<ForwardTraversalIterator> & latin1_string)
 {
-    std::string utf8;
+    std::basic_string<CharT> utf8;
 
     for (auto code_point : latin1_string) {
         encode_latin1_to_utf8(code_point, utf8);
