@@ -107,21 +107,21 @@ int main(int argc, char* argv[]) {
                   {
                        {"k"       , ID_KEY_CHARS},
                        {"="       , ID_SEPARATOR_EQUAL},
-                       { "\\u000" , ID_BAD_UNICODE},
+                       { "\\u000" , ID_VALUE_BAD_UNICODE},
                   }));
         BOOST_TEST(test("k= \\u000 ",
                   {
                        {"k"         , ID_KEY_CHARS},
                        {"="         , ID_SEPARATOR_EQUAL},
                        {" "         , ID_VALUE_SPACES},
-                       {"\\u000"    , ID_BAD_UNICODE},
+                       {"\\u000"    , ID_VALUE_BAD_UNICODE},
                        {" "         , ID_VALUE_SPACES}
                   }));
         BOOST_TEST(test("k=\\u000giga",
                   {
                        {"k"           , ID_KEY_CHARS},
                        {"="           , ID_SEPARATOR_EQUAL},
-                       {"\\u000"      , ID_BAD_UNICODE},
+                       {"\\u000"      , ID_VALUE_BAD_UNICODE},
                        {"giga"        , ID_VALUE_CHARS}
                   }));
     }

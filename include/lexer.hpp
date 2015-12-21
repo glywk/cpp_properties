@@ -26,7 +26,6 @@ namespace token
         ID_LINE_BREAK_CR,
         ID_LINE_BREAK_LF,
         ID_LINE_BREAK_EOL,
-        ID_BAD_UNICODE,
         ID_COMMENT_SHARP,
         ID_COMMENT_EXCLAMATION,
         ID_COMMENT_CHARS,
@@ -37,6 +36,7 @@ namespace token
         ID_KEY_CHARS,
         ID_KEY_ESCAPE_CHAR,
         ID_KEY_UNICODE,
+        ID_KEY_BAD_UNICODE,
         ID_KEY_CR,
         ID_KEY_LF,
         ID_KEY_EOL,
@@ -56,7 +56,8 @@ namespace token
         ID_VALUE_CHARS,
         ID_VALUE_ESCAPE_CHAR,
         ID_VALUE_UNICODE,
-        ID_VALUE_CR,
+        ID_VALUE_BAD_UNICODE,
+		ID_VALUE_CR,
         ID_VALUE_LF,
         ID_VALUE_EOL,
         ID_VALUE_LINE_BREAK_CR,
@@ -133,7 +134,7 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
             ("{first_key}"   , ID_KEY_CHARS)
             ("{escape}"      , ID_KEY_ESCAPE_CHAR)
             ("{unicode}"     , ID_KEY_UNICODE)
-            ("{bad_unicode}" , ID_BAD_UNICODE)
+            ("{bad_unicode}" , ID_KEY_BAD_UNICODE)
         ;
 
         this->self("KEY").add
@@ -143,7 +144,7 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
             ("{lb_cr}"       , ID_KEY_LINE_BREAK_CR)
             ("{lb_lf}"       , ID_KEY_LINE_BREAK_LF)
             ("{lb_eol}"      , ID_KEY_LINE_BREAK_EOL)
-            ("{bad_unicode}" , ID_BAD_UNICODE)
+            ("{bad_unicode}" , ID_KEY_BAD_UNICODE)
         ;
 
         this->self("KEY", "INITIAL").add
@@ -198,14 +199,14 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
             ("{lb_cr}"       , ID_VALUE_LINE_BREAK_CR)
             ("{lb_lf}"       , ID_VALUE_LINE_BREAK_LF)
             ("{lb_eol}"      , ID_VALUE_LINE_BREAK_EOL)
-            ("{bad_unicode}" , ID_BAD_UNICODE)
+            ("{bad_unicode}" , ID_VALUE_BAD_UNICODE)
         ;
 
         this->self("BLANK_SEPARATOR", "VALUE").add
             ("{blank_value}" , ID_VALUE_CHARS)
             ("{escape}"      , ID_VALUE_ESCAPE_CHAR)
             ("{unicode}"     , ID_VALUE_UNICODE)
-            ("{bad_unicode}" , ID_BAD_UNICODE)
+            ("{bad_unicode}" , ID_VALUE_BAD_UNICODE)
         ;
 
         this->self("VALUE").add
@@ -216,7 +217,7 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
             ("{lb_cr}"       , ID_VALUE_LINE_BREAK_CR)
             ("{lb_lf}"       , ID_VALUE_LINE_BREAK_LF)
             ("{lb_eol}"      , ID_VALUE_LINE_BREAK_EOL)
-            ("{bad_unicode}" , ID_BAD_UNICODE)
+            ("{bad_unicode}" , ID_VALUE_BAD_UNICODE)
         ;
 
         this->self("VALUE", "INITIAL").add

@@ -125,17 +125,17 @@ int main(int argc, char* argv[]) {
     {
         BOOST_TEST(test("\\u000",
                   {
-                       { "\\u000", ID_BAD_UNICODE},
+                       { "\\u000", ID_KEY_BAD_UNICODE},
                   }));
         BOOST_TEST(test(" \\u000 ",
                   {
                        {" "      , ID_SPACES},
-                       {"\\u000" , ID_BAD_UNICODE},
+                       {"\\u000" , ID_KEY_BAD_UNICODE},
                        {" "      , ID_SEPARATOR_SPACES}
                   }));
         BOOST_TEST(test("\\u000=epsilon",
                   {
-                       { "\\u000"       , ID_BAD_UNICODE},
+                       { "\\u000"       , ID_KEY_BAD_UNICODE},
                        { "="            , ID_SEPARATOR_EQUAL},
                        { "epsilon"      , ID_VALUE_CHARS}
                   }));

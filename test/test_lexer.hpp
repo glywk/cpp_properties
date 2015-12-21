@@ -43,7 +43,6 @@ class tokenizer {
         name[ID_LINE_BREAK_CR]            = "ID_LINE_BREAK_CR";
         name[ID_LINE_BREAK_LF]            = "ID_LINE_BREAK_LF";
         name[ID_LINE_BREAK_EOL]           = "ID_LINE_BREAK_EOL";
-        name[ID_BAD_UNICODE]              = "ID_BAD_UNICODE";
         name[ID_COMMENT_SHARP]            = "ID_COMMENT_SHARP";
         name[ID_COMMENT_EXCLAMATION]      = "ID_COMMENT_EXCLAMATION";
         name[ID_COMMENT_CHARS]            = "ID_COMMENT_CHARS";
@@ -54,6 +53,7 @@ class tokenizer {
         name[ID_KEY_CHARS]                = "ID_KEY_CHARS";
         name[ID_KEY_ESCAPE_CHAR]          = "ID_KEY_ESCAPE_CHAR";
         name[ID_KEY_UNICODE]              = "ID_KEY_UNICODE";
+        name[ID_KEY_BAD_UNICODE]          = "ID_KEY_BAD_UNICODE";
         name[ID_KEY_CR]                   = "ID_KEY_CR";
         name[ID_KEY_LF]                   = "ID_KEY_LF";
         name[ID_KEY_EOL]                  = "ID_KEY_EOL";
@@ -73,6 +73,7 @@ class tokenizer {
         name[ID_VALUE_CHARS]              = "ID_VALUE_CHARS";
         name[ID_VALUE_ESCAPE_CHAR]        = "ID_VALUE_ESCAPE_CHAR";
         name[ID_VALUE_UNICODE]            = "ID_VALUE_UNICODE";
+        name[ID_VALUE_BAD_UNICODE]        = "ID_VALUE_BAD_UNICODE";
         name[ID_VALUE_CR]                 = "ID_VALUE_CR";
         name[ID_VALUE_LF]                 = "ID_VALUE_LF";
         name[ID_VALUE_EOL]                = "ID_VALUE_EOL";
