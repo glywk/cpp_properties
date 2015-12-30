@@ -6,7 +6,7 @@ according to the java properties grammar (https://docs.oracle.com/javase/8/docs/
 
 Overview
 --------
-The simple_reader.cc example shows how to parse following valid java property file:
+The [simple_reader.cc](cpp_properties/example/simple_reader.cc) example shows how to parse following valid java property file:
 
 <pre>  
 #==============================================================================
