@@ -138,9 +138,6 @@ class properties_action
     properties_action(Actor & actor_reference) :
         actor(actor_reference) {}
 
-	properties_action(properties_action && action) :
-		actor(std::move(action.actor)) {}
-
     // the function operator gets called for each of the matched tokens
     template <typename Token>
     bool operator()(Token const& token) const
