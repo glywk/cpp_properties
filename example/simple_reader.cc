@@ -138,6 +138,9 @@ class properties_action
     properties_action(Actor & actor_reference) :
         actor(actor_reference) {}
 
+    properties_action( properties_action && other) :
+        actor(other.actor) {}
+
     // the function operator gets called for each of the matched tokens
     template <typename Token>
     bool operator()(Token const& token) const
@@ -196,7 +199,7 @@ class properties_action
  */
 template <typename Actor>
 properties_action<Actor> make_action(Actor & actor) {
-    return std::move(properties_action<Actor>(actor));
+    return properties_action<Actor>(actor);
 }
 
 /*!
@@ -212,7 +215,7 @@ bool tokenize_and_parse(char const* first, char const* last, typename Traits::pr
     cp::cpp_properties_lexer<lex::lexertl::lexer<> > lexer;
 
     Actor actor(cpp_properties);
-    Action action = make_action(actor);
+    Action action = std::move(make_action(actor));
 
     return lex::tokenize(first, last, lexer, [&action](auto token) {
         return action(token);
