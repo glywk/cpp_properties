@@ -95,7 +95,7 @@ private:
 
     property_type & allocate() {
             current_reference = &properties_actor::get;
-            properties.emplace_back(std::make_pair(std::string(), std::string()));
+            properties.emplace_back(std::string(), std::string());
             property = properties.back();
             return property;
         };
