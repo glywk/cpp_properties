@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
 
 project(cpp_properties)
 
@@ -28,7 +28,7 @@ endif()
 
 set(CONFIGURED_ONCE TRUE CACHE INTERNAL "A flag showing that CMake has configured at least once.")
 
-find_package(Boost 1.47 REQUIRED spirit)
+find_package(Boost 1.47 REQUIRED)
 
 include_directories(
         ${Boost_INCLUDE_DIR}
