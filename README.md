@@ -10,7 +10,7 @@ The [simple_reader.cc](example/simple_reader.cc) example shows how to parse foll
 
 <pre>  
 #==============================================================================
-# Copyright (c) 2015 glywk
+# Copyright (c) 2015-2018 glywk
 # https://github.com/glywk
 # 
 # Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -220,7 +220,7 @@ latin1.value \\u00E9.expect.display.escaped(\é).as.(\u00E9)
 ! Simple value with unicode chars
 ! -----------------------------------------------------------------------------
 value.unicode.char_16.smileys \u263a[\\u263a],\u263B[\\u263B]
-value.unicode.char_16.smileys.and.chars \u263a0[\\u263a0,\u263B0[\\u263B]0
+value.unicode.char_16.smileys.and.chars \u263a0[\\u263a]0,\u263B0[\\u263B]0
 value.unicode.escape.is.case.sensitive \U263a[\\U263a],\U263B[\\U263B]
 
 # =============================================================================
@@ -291,7 +291,7 @@ escape.value==&gt; escaped:{\t=&gt;[	]}{\n=&gt;[
 latin1.value=\u00E9.expect.display(é).as.(é)
 latin1.value=\u00E9.expect.display.escaped(é).as.(é) 
 value.unicode.char_16.smileys=☺[\u263a],☻[\u263B]
-value.unicode.char_16.smileys.and.chars=☺0[\u263a0,☻0[\u263B]0
+value.unicode.char_16.smileys.and.chars=☺0[\u263a]0,☻0[\u263B]0
 value.unicode.escape.is.case.sensitive=U263a[\U263a],U263B[\U263B]
 single.key=
 </pre>
