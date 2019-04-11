@@ -15,7 +15,7 @@
 #include <boost/spirit/include/phoenix_statement.hpp>
 #include <boost/spirit/include/phoenix_algorithm.hpp>
 #include <boost/spirit/include/phoenix_core.hpp>
-#include <lexer.hpp>
+#include <cpp_properties/lexer.hpp>
 #include <list>
 
 using std::list;

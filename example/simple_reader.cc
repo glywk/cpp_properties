@@ -21,7 +21,7 @@
 #include <functional>
 
 #include <utils.hpp>
-#include <lexer.hpp>
+#include <cpp_properties/lexer.hpp>
 
 namespace lex = boost::spirit::lex;
 namespace cp = cpp_properties;

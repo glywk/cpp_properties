@@ -1,11 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-
 project(cpp_properties)
-
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-# Activate C++11
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 # Activate warnings
 if(DEFINED CMAKE_CXX_COMPILER_ID)
@@ -28,8 +22,6 @@ endif()
 
 set(CONFIGURED_ONCE TRUE CACHE INTERNAL "A flag showing that CMake has configured at least once.")
 
-find_package(Boost 1.47 REQUIRED)
-
 include_directories(
         ${Boost_INCLUDE_DIR}
         ${cpp_properties_SOURCE_DIR}/include
@@ -37,10 +29,12 @@ include_directories(
 
 link_directories(${Boost_SPIRIT_LIBRARY_DEBUG})
 
+# Project code
+add_subdirectory(src)
+
+# Example
 add_subdirectory(example)
 
-# Test cases
+# Unit tests
 enable_testing()
-
-# Libraries
 add_subdirectory(test)

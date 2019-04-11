@@ -1,19 +1,28 @@
-#include_directories(/etc/apps/include .)
-include_directories(
-        /usr/local/include
+cmake_minimum_required(VERSION 3.10)
+project(CppProperties
+  VERSION 0.1.1
+  DESCRIPTION "Java properties parser"
+  HOMEPAGE_URL https://github.com/glywk/cpp_properties
+  LANGUAGES CXX
 )
-link_directories(/usr/local/lib/boost_1_59_0/lib)
 
-add_executable(hello cpp_properties.cc)
+find_package(Boost 1.47
+  REQUIRED
+#    spirit
+)
 
-add_executable(word_count word_count.cpp)
+add_library(cpp_properties INTERFACE)
+target_compile_features(cpp_properties
+  INTERFACE
+    cxx_std_11
+)
+target_include_directories(cpp_properties
+  INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
-#link_directories (/etc/apps/lib)
-add_executable(cpp_test cpp_test.cc)
-target_link_libraries (cpp_test boost_unit_test_framework boost_regex)
-
-add_executable(cpp_test2 cpp_test2.cc)
-add_executable(cpp_test3 cpp_test3.cc)
-
-
-
+add_library(glywk::cpp_properties
+  ALIAS
+    cpp_properties
+)
