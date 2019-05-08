@@ -12,16 +12,17 @@
 
 // #define BOOST_SPIRIT_LEXERTL_DEBUG
 
+#include <sample/encoding/encoding.hpp>
+#include <sample/io/file.hpp>
+
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/lex_lexertl.hpp>
 
+#include <cpp_properties/lexer.hpp>
+
 #include <iostream>
-#include <string>
 #include <vector>
 #include <functional>
-
-#include <utils.hpp>
-#include <cpp_properties/lexer.hpp>
 
 namespace lex = boost::spirit::lex;
 namespace cp = cpp_properties;

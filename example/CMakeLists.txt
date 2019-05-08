@@ -1,19 +1,18 @@
 cmake_minimum_required(VERSION 3.10)
 project(CppPropertiesExamples)
 
-if(NOT TARGET glywk::cpp_properties)
-    find_package(cpp_properties CONFIG REQUIRED)
-endif()
+add_library(cpp_properties_common_sample INTERFACE)
 
-# Example of lexer use
-add_executable(simple_reader
-    simple_reader.cc
+target_include_directories(cpp_properties_common_sample
+  INTERFACE
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
 )
-target_include_directories(simple_reader
-  PRIVATE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+
+add_library(glywk::common_sample
+  ALIAS
+    cpp_properties_common_sample
 )
-target_link_libraries(simple_reader
-  PRIVATE
-    glywk::cpp_properties
-)
+
+# Examples of lexer use
+add_subdirectory(simple_reader)
