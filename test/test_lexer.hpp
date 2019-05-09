@@ -8,14 +8,15 @@
 #ifndef CPP_PROPETIES_TEST_LEXER_HPP
 #define CPP_PROPETIES_TEST_LEXER_HPP
 
+#include <cpp_properties/lexer.hpp>
+
 #include <boost/config/warning_disable.hpp>
 #include <boost/detail/lightweight_test.hpp>
-#include <boost/spirit/include/lex_lexertl.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/phoenix_statement.hpp>
 #include <boost/spirit/include/phoenix_algorithm.hpp>
 #include <boost/spirit/include/phoenix_core.hpp>
-#include <cpp_properties/lexer.hpp>
+
 #include <list>
 
 using std::list;

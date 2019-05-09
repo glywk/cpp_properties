@@ -14,11 +14,7 @@
 
 #include <sample/encoding/encoding.hpp>
 #include <sample/io/file.hpp>
-
-#include <boost/config/warning_disable.hpp>
-#include <boost/spirit/include/lex_lexertl.hpp>
-
-#include <cpp_properties/lexer.hpp>
+#include <sample/action/properties_action.hpp>
 
 #include <iostream>
 #include <vector>
@@ -30,18 +26,6 @@ using namespace cp::token;
 
 // define macro for callback member function
 #define CALL_MEMBER_FN(member_function)  ((*this).*(member_function))
-
-/*!
- * helper function to concatenate char range to the given string.
- */
-template <
-	typename ForwardTraversalIterator,
-	typename CharT = boost::iterator_value<ForwardTraversalIterator>::type
->
-std::basic_string<CharT> & operator+=(std::string & lhs, const boost::iterator_range<ForwardTraversalIterator> & range) {
-    lhs += std::basic_string<CharT>(range.begin(), range.end());
-    return lhs;
-}
 
 /*!
  * the key-value property traits to provide to visit the abstract syntax tree.
@@ -115,93 +99,6 @@ private:
     // the callback to retrieve the current property reference
     current_reference_callback current_reference;
 };
-
-/*!
- * in this example the class 'properties_action' is used as a functor for 
- * collecting all key-value properties in the analyzed input sequence by
- * identifying the matched tokens as passed from the lexer.
- */
-template <typename Actor>
-class properties_action
-{
-  public:
-    // this is an implementation detail specific to boost::bind and doesn't show 
-    // up in the documentation
-    typedef bool result_type;
-
-    // actor type
-    typedef Actor actor_type;
-    // type of properties container output
-    typedef typename actor_type::properties_type properties_type;
-    // type of a key-value property
-    typedef typename actor_type::property_type property_type;
-
-    properties_action(Actor & actor_reference) :
-        actor(actor_reference) {}
-
-    properties_action( properties_action && other) :
-        actor(other.actor) {}
-
-    // the function operator gets called for each of the matched tokens
-    template <typename Token>
-    bool operator()(Token const& token) const
-    {
-        switch (token.id()) {
-        case ID_KEY_CHARS:
-            actor.current().first += latin1_to_utf8(token.value());
-            break;
-        case ID_KEY_ESCAPE_CHAR:
-            actor.current().first += escape_sequence_to_utf8(token.value());
-            break;
-        case ID_KEY_UNICODE:
-            actor.current().first += decode_to_utf8(token.value());
-            break;
-        case ID_KEY_CR:
-        case ID_KEY_LF:
-        case ID_KEY_EOL:
-        case ID_SEPARATOR_CR:
-        case ID_SEPARATOR_LF:
-        case ID_SEPARATOR_EOL:
-            actor.push_back();
-            break;
-        case ID_SEPARATOR_EQUAL:
-        case ID_SEPARATOR_COLON:
-            // force initialization for useless empty key/value case
-            actor.current();
-            break;
-        case ID_VALUE_SPACES:
-        case ID_VALUE_CHARS:
-            actor.current().second += latin1_to_utf8(token.value());
-            break;
-        case ID_VALUE_ESCAPE_CHAR:
-            actor.current().second += escape_sequence_to_utf8(token.value());
-            break;
-        case ID_VALUE_UNICODE:
-            actor.current().second += decode_to_utf8(token.value());
-            break;
-        case ID_VALUE_CR:
-        case ID_VALUE_LF:
-        case ID_VALUE_EOL:
-            actor.push_back();
-            break;
-        }
-
-        // always continue to tokenize
-        return true;
-    }
-
-  private:
-      actor_type & actor;
-};
-
-/*!
- * helper function to build a property action based on a visitor fields to hide
- * details.
- */
-template <typename Actor>
-properties_action<Actor> make_action(Actor & actor) {
-    return properties_action<Actor>(actor);
-}
 
 /*!
  * tokenize the text and populate the output container

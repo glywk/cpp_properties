@@ -8,6 +8,9 @@
 #ifndef CPP_PROPERTIES_LEXER_HPP
 #define CPP_PROPERTIES_LEXER_HPP
 
+#include <boost/config/warning_disable.hpp>
+#include <boost/spirit/include/lex_lexertl.hpp>
+
 namespace cpp_properties
 {
 namespace lex = boost::spirit::lex;
@@ -72,6 +75,7 @@ namespace token
 template <typename Lexer>
 struct cpp_properties_lexer : lex::lexer<Lexer>
 {
+    // clang-format off
     cpp_properties_lexer()
     {
         this->self.add_pattern
@@ -97,7 +101,7 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
             ("key"         , "[^ \\f\\t\\r\\n\\\\=:]+")
 
             ("blank_value" , "[^ \\f\\t\\r\\n\\\\=:][^ \\f\\t\\r\\n\\\\]*")
-            ("value" , "[^ \\f\\t\\r\\n\\\\]+")
+            ("value"       , "[^ \\f\\t\\r\\n\\\\]+")
 
             ("unicode"     , "\\\\u[0-9a-fA-F]{4}")
             ("bad_unicode" , "\\\\u[0-9a-fA-F]{0,3}")
@@ -227,6 +231,7 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
         ;
 
     }
+    // clang-format on
 };
 
 }
