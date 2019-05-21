@@ -6,7 +6,9 @@ according to the java properties grammar (https://docs.oracle.com/javase/8/docs/
 
 Overview
 --------
-The [simple_reader.cc](example/simple_reader.cc) example shows how to parse following valid java property file:
+Example directory shows how to parse following valid java property file in different structures:
+* The [simple_reader.cc](example/simple_reader/simple_reader.cc) example loads a property file in a collection of key/value.
+* The [properties_tree.cc](example/properties_tree/properties_tree.cc) example loads a property file in a [boost::property_tree](https://www.boost.org/doc/libs/1_70_0/doc/html/property_tree.html).
 
 <pre>  
 #==============================================================================
