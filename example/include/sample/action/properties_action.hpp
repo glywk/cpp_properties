@@ -69,6 +69,7 @@ public:
 
   // the function operator gets called for each of the matched tokens
   template <typename Token> bool operator()(Token const &token) const {
+    using namespace cpp_properties::token;
     switch (token.id()) {
     case ID_KEY_CHARS:
       actor.current().first += latin1_to_utf8(token.value());

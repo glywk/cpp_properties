@@ -78,6 +78,7 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
     // clang-format off
     cpp_properties_lexer()
     {
+        using namespace token;
         this->self.add_pattern
             ("cr"          , "\\r")
             ("lf"          , "\\n")
