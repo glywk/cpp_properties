@@ -10,7 +10,7 @@ Example directory shows how to parse following valid java property file in diffe
 * The [simple_reader.cc](example/simple_reader/simple_reader.cc) example loads a property file in a collection of key/value.
 * The [properties_tree.cc](example/properties_tree/properties_tree.cc) example loads a property file in a [boost::property_tree](https://www.boost.org/doc/libs/1_70_0/doc/html/property_tree.html).
 
-<pre>  
+``` properties
 #==============================================================================
 # Copyright (c) 2015-2018 glywk
 # https://github.com/glywk
@@ -296,7 +296,7 @@ value.unicode.char_16.smileys=☺[\u263a],☻[\u263B]
 value.unicode.char_16.smileys.and.chars=☺0[\u263a]0,☻0[\u263B]0
 value.unicode.escape.is.case.sensitive=U263a[\U263a],U263B[\U263B]
 single.key=
-</pre>
+```
 
 Compiling
 ---------
