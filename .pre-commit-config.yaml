@@ -1,0 +1,15 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+    -   id: trailing-whitespace
+-   repo: local
+    hooks:
+    -   id: clang-format
+        name: clang-format
+        description: Format source code with clang-format
+        entry: git
+        language: system
+        files: \.(cpp|cc|c\+\+|cxx|c|cl|h|hh|hpp|m|mm|inc|js|ts|proto|protodevel|java|cs)$
+        pass_filenames: false
+        args: ['clang-format','v']
