@@ -233,9 +233,9 @@ value.unicode.escape.is.case.sensitive \U263a[\\U263a],\U263B[\\U263B]
 ! Key without end of line
 ! -----------------------------------------------------------------------------
 single.key
-</pre>
+```
 have to be understand as:
-<pre> 
+``` properties
 comment.break.line.should.not.hide.this.key1=
 comment.break.line.should.not.hide.this.key2=
 simple=
