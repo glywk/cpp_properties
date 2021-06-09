@@ -13,6 +13,10 @@ endif()
 add_executable(properties_tree
     properties_tree.cc
 )
+target_compile_features(properties_tree
+  PUBLIC
+    cxx_std_14
+)
 target_include_directories(properties_tree
   PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>

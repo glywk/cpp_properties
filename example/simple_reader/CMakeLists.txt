@@ -13,6 +13,10 @@ endif()
 add_executable(simple_reader
     simple_reader.cc
 )
+target_compile_features(simple_reader
+  PUBLIC
+    cxx_std_14
+)
 target_include_directories(simple_reader
   PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
