@@ -15,12 +15,9 @@
 /*!
  * helper function to concatenate char range to the given string.
  */
-template <
-    typename ForwardTraversalIterator,
-    typename CharT = boost::iterator_value<ForwardTraversalIterator>::type>
-std::basic_string<CharT> &
-operator+=(std::string &lhs,
-           const boost::iterator_range<ForwardTraversalIterator> &range) {
+template <typename ForwardTraversalIterator,
+          typename CharT = typename boost::iterator_value<ForwardTraversalIterator>::type>
+std::basic_string<CharT> &operator+=(std::string &lhs, const boost::iterator_range<ForwardTraversalIterator> &range) {
   lhs += std::basic_string<CharT>(range.begin(), range.end());
   return lhs;
 }
@@ -39,11 +36,11 @@ operator+=(std::string &lhs,
  *       typedef *implementation defined* properties_type;
  *       // type of a key-value property
  *       typedef *implementation defined* property_type;
- *   
+ *
  *       // store the current property and change state to prepare
  *       // the next property read.
  *       void push_back();
- *   
+ *
  *       // create the current property pair to populate and change state to
  *       // return the current reference.
  *       property_type &current() { return CALL_MEMBER_FN(current_reference)(); }

@@ -23,13 +23,15 @@ namespace detail {
  * convert escape char to its given value or remove '\' when escape sequence is
  * not specific.
  */
-template <typename ForwardTraversalIterator, typename CharT = boost::iterator_value<ForwardTraversalIterator>::type>
+template <typename ForwardTraversalIterator,
+          typename CharT = typename boost::iterator_value<ForwardTraversalIterator>::type>
 const CharT last_char(const boost::iterator_range<ForwardTraversalIterator> &sequence,
                       const std::bidirectional_iterator_tag &) {
   return sequence.back();
 }
 
-template <typename ForwardTraversalIterator, typename CharT = boost::iterator_value<ForwardTraversalIterator>::type>
+template <typename ForwardTraversalIterator,
+          typename CharT = typename boost::iterator_value<ForwardTraversalIterator>::type>
 const CharT last_char(const boost::iterator_range<ForwardTraversalIterator> &sequence,
                       const std::forward_iterator_tag &) {
   // expects !sequence.empty();
@@ -43,7 +45,8 @@ const CharT last_char(const boost::iterator_range<ForwardTraversalIterator> &seq
 
 } // namespace detail
 
-template <typename ForwardTraversalIterator, typename CharT = boost::iterator_value<ForwardTraversalIterator>::type>
+template <typename ForwardTraversalIterator,
+          typename CharT = typename boost::iterator_value<ForwardTraversalIterator>::type>
 const CharT last_char(const boost::iterator_range<ForwardTraversalIterator> &sequence) {
   typename std::iterator_traits<ForwardTraversalIterator>::iterator_category category;
   return detail::last_char(sequence, category);
@@ -53,7 +56,8 @@ const CharT last_char(const boost::iterator_range<ForwardTraversalIterator> &seq
  * convert escape char to its given value or remove '\' when escape sequence is
  * not specific.
  */
-template <typename ForwardTraversalIterator, typename CharT = boost::iterator_value<ForwardTraversalIterator>::type>
+template <typename ForwardTraversalIterator,
+          typename CharT = typename boost::iterator_value<ForwardTraversalIterator>::type>
 const CharT escape_sequence(const boost::iterator_range<ForwardTraversalIterator> &sequence) {
   const CharT c = last_char(sequence);
   switch (c) {
@@ -77,7 +81,8 @@ const CharT escape_sequence(const boost::iterator_range<ForwardTraversalIterator
 /*!
  * convert escape unicode codepoint to its utf-8 character representation.
  */
-template <typename ForwardTraversalIterator, typename CharT = boost::iterator_value<ForwardTraversalIterator>::type>
+template <typename ForwardTraversalIterator,
+          typename CharT = typename boost::iterator_value<ForwardTraversalIterator>::type>
 std::basic_string<CharT> decode_to_utf8(const boost::iterator_range<ForwardTraversalIterator> &code_point) {
   auto c = code_point.begin();
   // skip unicode escape sequence (\u)
@@ -151,7 +156,8 @@ template <typename CharT> std::basic_string<CharT> encode_latin1_to_utf8(const C
  * convert escape char to its given value or remove '\' when escape sequence is
  * not specific.
  */
-template <typename ForwardTraversalIterator, typename CharT = boost::iterator_value<ForwardTraversalIterator>::type>
+template <typename ForwardTraversalIterator,
+          typename CharT = typename boost::iterator_value<ForwardTraversalIterator>::type>
 std::basic_string<CharT> escape_sequence_to_utf8(const boost::iterator_range<ForwardTraversalIterator> &sequence) {
   return encode_latin1_to_utf8(escape_sequence(sequence));
 }
@@ -159,7 +165,8 @@ std::basic_string<CharT> escape_sequence_to_utf8(const boost::iterator_range<For
 /*!
  * convert iso 8859-1 string to its utf-8 character representation.
  */
-template <typename ForwardTraversalIterator, typename CharT = boost::iterator_value<ForwardTraversalIterator>::type>
+template <typename ForwardTraversalIterator,
+          typename CharT = typename boost::iterator_value<ForwardTraversalIterator>::type>
 std::basic_string<CharT> latin1_to_utf8(const boost::iterator_range<ForwardTraversalIterator> &latin1_string) {
   std::basic_string<CharT> utf8;
 

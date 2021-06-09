@@ -12,8 +12,8 @@ repos:
         language: system
         files: \.(cpp|cc|c\+\+|cxx|c|cl|h|hh|hpp|m|mm|inc|js|ts|proto|protodevel|java|cs)$
         pass_filenames: false
-        args: ['clang-format','v']
-- repo: https://github.com/cheshirekow/cmake-format-precommit
-  rev: v0.6.10
-  hooks:
-      - id: cmake-format
+        args: ['clang-format','--verbose']
+-   repo: https://github.com/cheshirekow/cmake-format-precommit
+    rev: v0.6.10
+    hooks:
+    -   id: cmake-format
