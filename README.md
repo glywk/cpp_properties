@@ -62,9 +62,9 @@ no.\
    blank.\
          in.\
             this.\
-          \&quot;\
+          \"\
         key\
-      \&quot;\
+      \"\
 .
 
 ! -----------------------------------------------------------------------------
@@ -77,21 +77,21 @@ following.lines.includes.comment.syntax.in.a.key\
 ! -----------------------------------------------------------------------------
 ! Simple key with escape chars
 ! -----------------------------------------------------------------------------
-simple\ \=&gt;\ escaped\:\
-             {\\t\=&gt;[\t]}\
-             {\\n\=&gt;[\n]}\
-             {\\r\=&gt;[\r]}\
-             {\\f\=&gt;[\f]},\
+simple\ \=>\ escaped\:\
+             {\\t\=>[\t]}\
+             {\\n\=>[\n]}\
+             {\\r\=>[\r]}\
+             {\\f\=>[\f]},\
            \ not_escaped\:\
-             {\\\\\=&gt;[\\]}\
-             {\\0\=&gt;[\0]}\
+             {\\\\\=>[\\]}\
+             {\\0\=>[\0]}\
              {\\'\=,[\']}\
-             {\\&quot;\=&gt;[\&quot;]}\
-             {\\/\=&gt;[\/]}\
-             {\\v\=&gt;[\v]}\
-             {\\a\=&gt;[\a]}\
-             {\\b\=&gt;[\b]}\
-             {\\127\=&gt;[\127]}
+             {\\"\=>[\"]}\
+             {\\/\=>[\/]}\
+             {\\v\=>[\v]}\
+             {\\a\=>[\a]}\
+             {\\b\=>[\b]}\
+             {\\127\=>[\127]}
 
 ! -----------------------------------------------------------------------------
 ! Simple key with iso 8859-1 specific chars
@@ -181,9 +181,9 @@ no.\
    blank.\
          in.\
             this.\
-          \&quot;\
+          \"\
       value\
-    \&quot;\
+    \"\
 .
 
 ! -----------------------------------------------------------------------------
@@ -196,21 +196,21 @@ following.lines.includes.comment.syntax.in.a.value \
 ! -----------------------------------------------------------------------------
 ! Value with escape chars
 ! -----------------------------------------------------------------------------
-escape.value \=&gt; escaped:\
-             {\\t\=&gt;[\t]}\
-             {\\n\=&gt;[\n]}\
-             {\\r\=&gt;[\r]}\
-             {\\f\=&gt;[\f]}, \
+escape.value \=> escaped:\
+             {\\t\=>[\t]}\
+             {\\n\=>[\n]}\
+             {\\r\=>[\r]}\
+             {\\f\=>[\f]}, \
              not_escaped:\
-             {\\\\\=&gt;[\\]}\
-             {\\0\=&gt;[\0]}\
-             {\\'\=&gt;[\']}\
-             {\\&quot;\=&gt;[\&quot;]}\
-             {\\/\=&gt;[\/]}\
-             {\\v\=&gt;[\v]}\
-             {\\a\=&gt;[\a]}\
-             {\\b\=&gt;[\b]}\
-             {\\l27\=&gt;[\127]}
+             {\\\\\=>[\\]}\
+             {\\0\=>[\0]}\
+             {\\'\=>[\']}\
+             {\\"\=>[\"]}\
+             {\\/\=>[\/]}\
+             {\\v\=>[\v]}\
+             {\\a\=>[\a]}\
+             {\\b\=>[\b]}\
+             {\\l27\=>[\127]}
 
 ! -----------------------------------------------------------------------------
 ! Simple value with iso 8859-1 specific chars
@@ -245,11 +245,11 @@ trim.key3=
 trim.key3= value 3
 trim.key4= 
 trim.key5= value 5
-no.blank.in.this.&quot;key&quot;.=
+no.blank.in.this."key".=
 following.lines.includes.comment.syntax.in.a.key!--exclamation_comment_style--#--sharp_comment_style--=
-simple =&gt; escaped:{\t=&gt;[	]}{\n=&gt;[
-]}{\r=&gt;[
-]}{\f=&gt;[]}, not_escaped:{\\=&gt;[\]}{\0=&gt;[0]}{\'=,[']}{\&quot;=&gt;[&quot;]}{\/=&gt;[/]}{\v=&gt;[v]}{\a=&gt;[a]}{\b=&gt;[b]}{\127=&gt;[127]}=
+simple => escaped:{\t=>[	]}{\n=>[
+]}{\r=>[
+]}{\f=>[]}, not_escaped:{\\=>[\]}{\0=>[0]}{\'=,[']}{\"=>["]}{\/=>[/]}{\v=>[v]}{\a=>[a]}{\b=>[b]}{\127=>[127]}=
 latin1.key.\u00E9.expect.display(é).as.(é)=
 latin1.key.\u00E9.expect.display.escaped(é).as.(é)=
 simple.unicode.char_16.smileys ☺[\u263a],☻[\u263B]=
@@ -285,11 +285,11 @@ blank.key3=
 blank.key3= value 3
 blank.key4=
 blank.key5= value 5
-broken.line.in.value=no.blank.in.this.&quot;value&quot;.
+broken.line.in.value=no.blank.in.this."value".
 following.lines.includes.comment.syntax.in.a.value=!--exclamation_comment_style--#--sharp_comment style--
-escape.value==&gt; escaped:{\t=&gt;[	]}{\n=&gt;[
-]}{\r=&gt;[
-]}{\f=&gt;[]}, not_escaped:{\\=&gt;[\]}{\0=&gt;[0]}{\'=&gt;[']}{\&quot;=&gt;[&quot;]}{\/=&gt;[/]}{\v=&gt;[v]}{\a=&gt;[a]}{\b=&gt;[b]}{\l27=&gt;[127]}
+escape.value==> escaped:{\t=>[	]}{\n=>[
+]}{\r=>[
+]}{\f=>[]}, not_escaped:{\\=>[\]}{\0=>[0]}{\'=>[']}{\"=>["]}{\/=>[/]}{\v=>[v]}{\a=>[a]}{\b=>[b]}{\l27=>[127]}
 latin1.value=\u00E9.expect.display(é).as.(é)
 latin1.value=\u00E9.expect.display.escaped(é).as.(é) 
 value.unicode.char_16.smileys=☺[\u263a],☻[\u263B]
