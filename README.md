@@ -12,7 +12,7 @@ Example directory shows how to parse following valid java property file in diffe
 
 ``` properties
 #==============================================================================
-# Copyright (c) 2015-2018 glywk
+# Copyright (c) 2015-2021 glywk
 # https://github.com/glywk
 # 
 # Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -48,12 +48,12 @@ simple
 ! -----------------------------------------------------------------------------
 ! Prefix / postfix key blanks are trimmed
 ! -----------------------------------------------------------------------------
-  trim.keyl 
+  trim.key1 
   trim.key2  value 2
   trim.key3: 
-  trim.key3: value 3
-  trim.key4= 
-  trim.key5= value 5
+  trim.key4: value 4
+  trim.key5=
+  trim.key6= value 6
 
 ! -----------------------------------------------------------------------------
 ! Break line space are ignored in key construction
@@ -106,6 +106,12 @@ simple.unicode.char_16.smileys\ \u263a[\\u263a],\u263B[\\u263B]
 simple.unicode.char_16.smi1eys.and.chars\ \u263a0[\\u263a]0,\u263B0[\\u263B]0
 simple.unicode.escape.is.case.sensitive\ \U263a[\\U263a],\U263B[\\U263B]
 
+! -----------------------------------------------------------------------------
+! Next duplicated key definition is ignored
+! -----------------------------------------------------------------------------
+duplicated.key = first declaration
+duplicated.key = ignored declaration
+
 # =============================================================================
 # The following part illustrates many allowed separator syntax
 # =============================================================================
@@ -113,7 +119,7 @@ simple.unicode.escape.is.case.sensitive\ \U263a[\\U263a],\U263B[\\U263B]
 ! -----------------------------------------------------------------------------
 ! Key-value separated by blank chars
 ! -----------------------------------------------------------------------------
-blank.separatedl	valuel
+blank.separated1	value1
 blank.separated2	\
                 	value2
 blank.separated3	value3
@@ -121,7 +127,7 @@ blank.separated3	value3
 ! -----------------------------------------------------------------------------
 ! Key-value separated by colon char
 ! -----------------------------------------------------------------------------
-colon.separatedl:valuel
+colon.separated1:value1
 colon.separated2 :value2
 colon.separated3 : value3
 colon.separated4\
@@ -130,9 +136,13 @@ colon.separated5\
 :\
 value5
 colon.separated6::value6.include.colon:
-colon.separated7:=value7.include.equals=
-colon.separated8 \
-:=: value8.include.separator.chars :=
+colon.separated7=\
+:value7.break.line.before.include.colon:
+colon.separated8:=value8.include.equals=
+colon.separated9=\
+=value9.break.line.before.include.equals=
+colon.separated10 \
+:=: value10.include.separator.chars :=
 :
 
 ! -----------------------------------------------------------------------------
@@ -147,9 +157,13 @@ equal.separated5\
 =\
 value5
 equal.separated6=:value6.include.colon:
-equal.separated7==value7.include.equals=
-equal.separated8 \
-=:= value8.include.separator.chars =:
+equal.separated7=\
+:value7.break.line.before.include.colon:
+equal.separated8==value8.include.equals=
+equal.separated9=\
+=value9.break.line.before.include.equals=
+equal.separated10 \
+=:= value10.include.separator.chars =:
 =
 
 # =============================================================================
@@ -169,9 +183,9 @@ empty.key3=
 blank.key1
 blank.key2  value 2
 blank.key3:
-blank.key3: value 3
-blank.key4=
-blank.key5= value 5
+blank.key4: value 4
+blank.key5=
+blank.key6= value 6
 
 ! -----------------------------------------------------------------------------
 ! Break line space are ignored in value construction
@@ -239,42 +253,48 @@ have to be understand as:
 comment.break.line.should.not.hide.this.key1=
 comment.break.line.should.not.hide.this.key2=
 simple=
-trim.keyl=
+trim.key1=
 trim.key2=value 2
 trim.key3= 
-trim.key3= value 3
-trim.key4= 
-trim.key5= value 5
+trim.key4= value 4
+trim.key5=
+trim.key6= value 6
 no.blank.in.this."key".=
 following.lines.includes.comment.syntax.in.a.key!--exclamation_comment_style--#--sharp_comment_style--=
 simple => escaped:{\t=>[	]}{\n=>[
-]}{\r=>[
-]}{\f=>[]}, not_escaped:{\\=>[\]}{\0=>[0]}{\'=,[']}{\"=>["]}{\/=>[/]}{\v=>[v]}{\a=>[a]}{\b=>[b]}{\127=>[127]}=
+]}{\f=>[
+        ]}, not_escaped:{\\=>[\]}{\0=>[0]}{\'=,[']}{\"=>["]}{\/=>[/]}{\v=>[v]}{\a=>[a]}{\b=>[b]}{\127=>[127]}=
 latin1.key.\u00E9.expect.display(é).as.(é)=
 latin1.key.\u00E9.expect.display.escaped(é).as.(é)=
 simple.unicode.char_16.smileys ☺[\u263a],☻[\u263B]=
 simple.unicode.char_16.smi1eys.and.chars ☺0[\u263a]0,☻0[\u263B]0=
 simple.unicode.escape.is.case.sensitive U263a[\U263a],U263B[\U263B]=
-blank.separatedl=valuel
+duplicated.key= first declaration
+duplicated.key= have to be ignored declaration
+blank.separated1=value1
 blank.separated2=value2
 blank.separated3=value3
-colon.separatedl=valuel
+colon.separated1=value1
 colon.separated2=value2
 colon.separated3= value3
 colon.separated4=value4
 colon.separated5=value5
 colon.separated6=:value6.include.colon:
-colon.separated7==value7.include.equals=
-colon.separated8==: value8.include.separator.chars :=
+colon.separated7=:value7.break.line.before.include.colon:
+colon.separated8==value8.include.equals=
+colon.separated9==value9.break.line.before.include.equals=
+colon.separated10==: value10.include.separator.chars :=
 =
-equal.separatedl=valuel
+equal.separated1=value1
 equal.separated2=value2 
 equal.separated3= value3
 equal.separated4=value4
 equal.separated5=value5
 equal.separated6=:value6.include.colon:
-equal.separated7==value7.include.equals=
-equal.separated8=:= value8.include.separator.chars =:
+equal.separated7=:value7.break.line.before.include.colon:
+equal.separated8==value8.include.equals=
+equal.separated9==value9.break.line.before.include.equals=
+equal.separated10=:= value10.include.separator.chars =:
 =
 empty.key1=
 empty.key2=
@@ -282,16 +302,16 @@ empty.key3=
 blank.key1=
 blank.key2=value 2
 blank.key3=
-blank.key3= value 3
-blank.key4=
-blank.key5= value 5
+blank.key4= value 4
+blank.key5=
+blank.key6= value 6
 broken.line.in.value=no.blank.in.this."value".
 following.lines.includes.comment.syntax.in.a.value=!--exclamation_comment_style--#--sharp_comment style--
 escape.value==> escaped:{\t=>[	]}{\n=>[
-]}{\r=>[
-]}{\f=>[]}, not_escaped:{\\=>[\]}{\0=>[0]}{\'=>[']}{\"=>["]}{\/=>[/]}{\v=>[v]}{\a=>[a]}{\b=>[b]}{\l27=>[127]}
+]}{\f=>[
+        ]}, not_escaped:{\\=>[\]}{\0=>[0]}{\'=>[']}{\"=>["]}{\/=>[/]}{\v=>[v]}{\a=>[a]}{\b=>[b]}{\l27=>[127]}
 latin1.value=\u00E9.expect.display(é).as.(é)
-latin1.value=\u00E9.expect.display.escaped(é).as.(é) 
+latin1.value=\u00E9.expect.display.escaped(é).as.(é)
 value.unicode.char_16.smileys=☺[\u263a],☻[\u263B]
 value.unicode.char_16.smileys.and.chars=☺0[\u263a]0,☻0[\u263B]0
 value.unicode.escape.is.case.sensitive=U263a[\U263a],U263B[\U263B]
