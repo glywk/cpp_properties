@@ -13,10 +13,6 @@ if(NOT TARGET glywk::cpp_properties)
     find_package(cpp_properties CONFIG REQUIRED)
 endif()
 
-#include_directories(}
-#        ${cpp_properties_SOURCE_DIR}/test
-#		)
-
 #define a macro to simplify declare and adding tests
 macro (declare_test name)
   add_executable(${name} ${name}.cc)
@@ -32,7 +28,4 @@ macro (declare_test name)
 endmacro (declare_test)
 
 # Test cases
-declare_test(test_comment)
-declare_test(test_key)
-declare_test(test_separator)
-declare_test(test_value)
+add_subdirectory(lexer)
