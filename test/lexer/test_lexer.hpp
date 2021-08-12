@@ -1,12 +1,12 @@
 //=============================================================================
 // Copyright (c) 2015-2018 glywk
 // https://github.com/glywk
-// 
+//
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //=============================================================================
-#ifndef CPP_PROPETIES_TEST_LEXER_HPP
-#define CPP_PROPETIES_TEST_LEXER_HPP
+#ifndef CPP_PROPERTIES_TEST_LEXER_HPP
+#define CPP_PROPERTIES_TEST_LEXER_HPP
 
 #include <cpp_properties/lexer.hpp>
 
@@ -35,7 +35,7 @@ struct expected_token {
 class tokenizer {
     typedef lex::lexertl::token<char const*, boost::mpl::vector0<>, boost::mpl::true_> token_type;
     typedef lex::lexertl::actor_lexer<token_type> lexer_type;
-    
+
     void load_token_name_id() {
         name[ID_SPACES]                   = "ID_SPACES";
         name[ID_CR]                       = "ID_CR";
@@ -58,8 +58,8 @@ class tokenizer {
         name[ID_KEY_CR]                   = "ID_KEY_CR";
         name[ID_KEY_LF]                   = "ID_KEY_LF";
         name[ID_KEY_EOL]                  = "ID_KEY_EOL";
-        name[ID_KEY_LINE_BREAK_CR]        = "ID_KEY_LINE_BREAK_CR"; 
-        name[ID_KEY_LINE_BREAK_LF]        = "ID_KEY_LINE_BREAK_LF"; 
+        name[ID_KEY_LINE_BREAK_CR]        = "ID_KEY_LINE_BREAK_CR";
+        name[ID_KEY_LINE_BREAK_LF]        = "ID_KEY_LINE_BREAK_LF";
         name[ID_KEY_LINE_BREAK_EOL]       = "ID_KEY_LINE_BREAK_EOL";
         name[ID_SEPARATOR_COLON]          = "ID_SEPARATOR_COLON";
         name[ID_SEPARATOR_EQUAL]          = "ID_SEPARATOR_EQUAL";
@@ -82,18 +82,18 @@ class tokenizer {
         name[ID_VALUE_LINE_BREAK_LF]      = "ID_VALUE_LINE_BREAK_LF";
         name[ID_VALUE_LINE_BREAK_EOL]     = "ID_VALUE_LINE_BREAK_EOL";
     }
-    
- public: 
+
+ public:
     typedef expected_token value_type;
 
     tokenizer(const string &input): text(input) {
         load_token_name_id();
     }
-    
+
     tokenizer(const tokenizer &rhs): text(rhs.text) {
         load_token_name_id();
     }
-    
+
     bool as(const list<value_type>& rhs) {
         char const* first = text.c_str();
         char const* last = &first[text.size()];
@@ -101,13 +101,13 @@ class tokenizer {
         cp::cpp_properties_lexer<lexer_type> lexer;
         lexer_type::iterator_type iter = lexer.begin(first, last);
         lexer_type::iterator_type end = lexer.end();
-        
+
         list<value_type>::const_iterator citer_expected = rhs.cbegin();
         list<value_type>::const_iterator cend_expected = rhs.cend();
-        
+
         int i = 0;
         while (iter != end && token_is_valid(*iter) && citer_expected != cend_expected) {
-            if (iter->id() != citer_expected->id) { 
+            if (iter->id() != citer_expected->id) {
                 std::cout << "state: " << iter->state() << ", "
                             << "id: expected=" << name[citer_expected->id] << ", actual=" << name[iter->id()] << ", "
                           << "string:>" << iter->value() << "<\n";
@@ -115,7 +115,7 @@ class tokenizer {
             }
             if (iter->value() != citer_expected->value) {
             std::cout << "state: " << iter->state() << ", "
-                      << "id: " << name[iter->id()] << ", " 
+                      << "id: " << name[iter->id()] << ", "
                       << "string: expected=>" << iter->value() << "<, actual=>" << citer_expected->value << "<\n";
                 return false;
             }
@@ -126,19 +126,19 @@ class tokenizer {
         if (iter == end) {
             std::cout << "*** Debug: " << i << " token(s) found\n";
             if (citer_expected != cend_expected) {
-                std::cout << "missing expected tokens\n"; 
+                std::cout << "missing expected tokens\n";
                 return false;
             } else {
                 return true;
             }
         } else {
             std::string rest(first, last);
-            std::cout << "Lexical analysis failed\n" << "stopped at: \"" 
+            std::cout << "Lexical analysis failed\n" << "stopped at: \""
                       << rest << "\"\n";
         }
         return false;
     }
-    
+
   private:
     const string text;
     std::map<int, std::string> name;
