@@ -85,7 +85,7 @@ simple\ \=>\ escaped\:\
            \ not_escaped\:\
              {\\\\\=>[\\]}\
              {\\0\=>[\0]}\
-             {\\'\=,[\']}\
+             {\\'\=>[\']}\
              {\\"\=>[\"]}\
              {\\/\=>[\/]}\
              {\\v\=>[\v]}\
@@ -263,7 +263,7 @@ no.blank.in.this."key".=
 following.lines.includes.comment.syntax.in.a.key!--exclamation_comment_style--#--sharp_comment_style--=
 simple => escaped:{\t=>[	]}{\n=>[
 ]}{\f=>[
-        ]}, not_escaped:{\\=>[\]}{\0=>[0]}{\'=,[']}{\"=>["]}{\/=>[/]}{\v=>[v]}{\a=>[a]}{\b=>[b]}{\127=>[127]}=
+        ]}, not_escaped:{\\=>[\]}{\0=>[0]}{\'=>[']}{\"=>["]}{\/=>[/]}{\v=>[v]}{\a=>[a]}{\b=>[b]}{\127=>[127]}=
 latin1.key.\u00E9.expect.display(é).as.(é)=
 latin1.key.\u00E9.expect.display.escaped(é).as.(é)=
 simple.unicode.char_16.smileys ☺[\u263a],☻[\u263B]=
