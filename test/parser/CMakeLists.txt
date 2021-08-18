@@ -1,0 +1,1 @@
+declare_test(test_map_property)
