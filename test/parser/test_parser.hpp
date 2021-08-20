@@ -13,10 +13,6 @@
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/detail/lightweight_test.hpp>
-#include <boost/spirit/include/phoenix_algorithm.hpp>
-#include <boost/spirit/include/phoenix_core.hpp>
-#include <boost/spirit/include/phoenix_operator.hpp>
-#include <boost/spirit/include/phoenix_statement.hpp>
 
 #include <map>
 
@@ -30,14 +26,35 @@ using namespace cp::token;
 // define macro for callback member function
 #define CALL_MEMBER_FN(member_function) ((*this).*(member_function))
 
+namespace detail {
+// Needed for some older versions of GCC
+template <typename...> struct voider { using type = void; };
+
+// std::void_t will be part of C++17, but until then define it ourselves:
+template <typename... T> using void_t = typename voider<T...>::type;
+
+template <typename T, typename U = void> struct is_mappish_impl : std::false_type {};
+
+template <typename T>
+struct is_mappish_impl<T,
+                       void_t<typename T::key_type, typename T::mapped_type,
+                              decltype(std::declval<T &>().emplace(std::declval<const typename T::key_type &>(),
+                                                                   std::declval<const typename T::mapped_type &>()))>>
+    : std::true_type {};
+} // namespace detail
+
+template <typename T> struct is_mappish : detail::is_mappish_impl<T>::type {};
+
+template <bool B, typename T = void> using enable_if_t = typename std::enable_if<B, T>::type;
+
 /*!
  * the key-value property traits to provide to visit the abstract syntax tree.
  */
-struct properties_actor_traits {
+template <typename T, enable_if_t<is_mappish<T>::value, bool> = true> struct properties_actor_traits {
   // type of properties container output
-  typedef std::map<std::string, std::string> properties_type;
+  typedef T properties_type;
   // type of a key-value property
-  typedef properties_type::value_type property_type;
+  typedef typename T::value_type property_type;
 };
 
 /*!
@@ -116,10 +133,10 @@ bool tokenize_and_parse(Iterator first, Iterator last, typename Traits::properti
       [&action](const typename cp::cpp_properties_lexer<lexer_type>::token_type &token) { return action(token); });
 }
 
-void parse(string::const_iterator first, string::const_iterator last,
-           properties_actor_traits::properties_type &cpp_properties) {
+template <typename Map> void parse(string::const_iterator first, string::const_iterator last, Map &cpp_properties) {
 
-  bool success = tokenize_and_parse<std::string::const_iterator, properties_actor_traits>(first, last, cpp_properties);
+  bool success =
+      tokenize_and_parse<std::string::const_iterator, properties_actor_traits<Map>>(first, last, cpp_properties);
 
   // print results
   if (!success) {
@@ -130,7 +147,7 @@ void parse(string::const_iterator first, string::const_iterator last,
   return 0;
 }
 
-std::ostream &print_map(std::ostream &os, const std::map<std::string, std::string> &m) {
+template <typename Map> std::ostream &print_map(std::ostream &os, const Map &m) {
   string sep = "";
   for (const auto &property : m) {
     os << property.first << " = " << property.second << sep;
@@ -139,10 +156,10 @@ std::ostream &print_map(std::ostream &os, const std::map<std::string, std::strin
   return os;
 }
 
-bool properties_eq(const string &text, const map<string, string> &expected) {
-  map<string, string> map_properties;
+template <typename Map> bool properties_eq(const string &text, const Map &expected) {
+  Map map_properties;
   parse(text.begin(), text.end(), map_properties);
-  map<string, string> differences;
+  Map differences;
   std::set_symmetric_difference(expected.begin(), expected.end(), map_properties.begin(), map_properties.end(),
                                 std::inserter(differences, differences.end()));
   if (!differences.empty()) {
@@ -152,6 +169,10 @@ bool properties_eq(const string &text, const map<string, string> &expected) {
     return false;
   }
   return true;
+}
+
+bool properties_eq(const string &text, const map<string, string> &expected) {
+  return properties_eq<map<string, string>>(text, expected);
 }
 
 #endif
