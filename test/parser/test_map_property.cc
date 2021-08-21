@@ -5,23 +5,15 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //=============================================================================
-#include <test_parser.hpp>
+#include <common_test_properties.hpp>
+
+#include <boost/container/flat_map.hpp>
+
+#include <map>
 
 int main(int argc, char *argv[]) {
+  run_test<std::map<std::string, std::string>>();
+  run_test<boost::container::flat_map<std::string, std::string>>();
 
-  // empty
-  { BOOST_TEST(properties_eq("", {})); }
-
-  // value
-  { BOOST_TEST(properties_eq("k1::v:", {{"k1", ":v:"}})); }
-
-  // duplicate keep first
-  {
-    BOOST_TEST(properties_eq(R"(
-                                 k=v
-                                 k=v2
-                                 )",
-                             {{"k", "v"}}));
-  }
   return boost::report_errors();
 }

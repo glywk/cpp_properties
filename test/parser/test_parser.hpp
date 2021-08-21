@@ -11,11 +11,6 @@
 #include <cpp_properties/action/properties_action.hpp>
 #include <cpp_properties/lexer.hpp>
 
-#include <boost/config/warning_disable.hpp>
-#include <boost/detail/lightweight_test.hpp>
-
-#include <map>
-
 using std::map;
 using std::string;
 
@@ -26,35 +21,14 @@ using namespace cp::token;
 // define macro for callback member function
 #define CALL_MEMBER_FN(member_function) ((*this).*(member_function))
 
-namespace detail {
-// Needed for some older versions of GCC
-template <typename...> struct voider { using type = void; };
-
-// std::void_t will be part of C++17, but until then define it ourselves:
-template <typename... T> using void_t = typename voider<T...>::type;
-
-template <typename T, typename U = void> struct is_mappish_impl : std::false_type {};
-
-template <typename T>
-struct is_mappish_impl<T,
-                       void_t<typename T::key_type, typename T::mapped_type,
-                              decltype(std::declval<T &>().emplace(std::declval<const typename T::key_type &>(),
-                                                                   std::declval<const typename T::mapped_type &>()))>>
-    : std::true_type {};
-} // namespace detail
-
-template <typename T> struct is_mappish : detail::is_mappish_impl<T>::type {};
-
-template <bool B, typename T = void> using enable_if_t = typename std::enable_if<B, T>::type;
-
 /*!
  * the key-value property traits to provide to visit the abstract syntax tree.
  */
-template <typename T, enable_if_t<is_mappish<T>::value, bool> = true> struct properties_actor_traits {
+template <typename T, typename S = std::string> struct properties_actor_traits {
   // type of properties container output
   typedef T properties_type;
-  // type of a key-value property
-  typedef typename T::value_type property_type;
+  // type of key,value property accepted by emplace method
+  typedef S string_type;
 };
 
 /*!
@@ -66,9 +40,13 @@ template <typename Traits> class properties_actor {
 public:
   // type of properties container output
   typedef typename Traits::properties_type properties_type;
-  // type of a key-value property
-  typedef std::pair<typename properties_type::key_type, typename properties_type::mapped_type> property_type;
 
+  // type of transient action key-value property
+  typedef typename Traits::string_type key_type;
+  typedef typename Traits::string_type mapped_type;
+  typedef std::pair<key_type, mapped_type> property_type;
+
+public:
   ~properties_actor() {
     if (property) {
       properties.emplace(std::move(property->first), std::move(property->second));
@@ -118,9 +96,9 @@ private:
 /*!
  * tokenize the text and populate the output container
  */
-template <typename Iterator, typename Traits, typename Actor = properties_actor<Traits>,
-          typename Action = properties_action<Actor>>
-bool tokenize_and_parse(Iterator first, Iterator last, typename Traits::properties_type &cpp_properties) {
+template <typename T, typename Iterator, typename Traits = properties_actor_traits<T>,
+          typename Actor = properties_actor<Traits>, typename Action = properties_action<Actor>>
+bool tokenize_and_parse(Iterator first, Iterator last, T &cpp_properties) {
   // create the token definition instance needed to invoke the lexical analyzer
   using lexer_type = lex::lexertl::lexer<lex::lexertl::token<Iterator>>;
   cp::cpp_properties_lexer<lexer_type> lexer;
@@ -135,8 +113,7 @@ bool tokenize_and_parse(Iterator first, Iterator last, typename Traits::properti
 
 template <typename Map> void parse(string::const_iterator first, string::const_iterator last, Map &cpp_properties) {
 
-  bool success =
-      tokenize_and_parse<std::string::const_iterator, properties_actor_traits<Map>>(first, last, cpp_properties);
+  bool success = tokenize_and_parse(first, last, cpp_properties);
 
   // print results
   if (!success) {
@@ -169,10 +146,6 @@ template <typename Map> bool properties_eq(const string &text, const Map &expect
     return false;
   }
   return true;
-}
-
-bool properties_eq(const string &text, const map<string, string> &expected) {
-  return properties_eq<map<string, string>>(text, expected);
 }
 
 #endif
