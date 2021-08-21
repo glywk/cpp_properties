@@ -12,8 +12,9 @@
 #include <map>
 
 int main(int argc, char *argv[]) {
-  run_test<std::map<std::string, std::string>>();
-  run_test<boost::container::flat_map<std::string, std::string>>();
+
+  run_map_test<std::map<std::string, std::string>>();
+  run_map_test<boost::container::flat_map<std::string, std::string>>();
 
   return boost::report_errors();
 }

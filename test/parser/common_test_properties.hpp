@@ -13,21 +13,46 @@
 #include <boost/config/warning_disable.hpp>
 #include <boost/detail/lightweight_test.hpp>
 
-template <typename T> void run_test() {
+#include <vector>
+
+template <typename T, typename V> void run_common_test() {
 
   // empty
-  { BOOST_TEST(properties_eq<T>("", {})); }
+  { BOOST_TEST((properties_eq<T, V>("", {}))); }
+
+  // just a key
+  { BOOST_TEST((properties_eq<T, V>("k1", {{"k1", ""}}))); }
 
   // value
-  { BOOST_TEST(properties_eq<T>("k1::v:", {{"k1", ":v:"}})); }
+  { BOOST_TEST((properties_eq<T, V>("k1::v:", {{"k1", ":v:"}}))); }
+}
 
-  // duplicate keep first
+template <typename T, typename V = T> void run_map_test() {
+
+  run_common_test<T, V>();
+
+  // duplicate keep first key insertion
   {
-    BOOST_TEST(properties_eq<T>(R"(
+    BOOST_TEST((properties_eq<T, V>(R"(
                                  k=v
                                  k=v2
                                  )",
-                                {{"k", "v"}}));
+                                    {{"k", "v"}})));
   }
 }
+
+template <typename T, typename V = std::vector<typename T::key_type>> void run_set_test() {
+
+  run_common_test<T, V>();
+
+  // duplicate keep first key insertion
+  {
+    BOOST_TEST((properties_eq<T, V>(R"(
+                                 k=v
+                                 k=v2
+                                 )",
+                                    {{"k", "v"}})));
+  }
+}
+
 #endif

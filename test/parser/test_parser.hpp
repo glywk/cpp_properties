@@ -124,25 +124,40 @@ template <typename Map> void parse(string::const_iterator first, string::const_i
   return 0;
 }
 
-template <typename Map> std::ostream &print_map(std::ostream &os, const Map &m) {
+std::ostream &operator<<(std::ostream &os, const std::pair<const std::string, std::string> &property) {
+  os << std::get<0>(property) << " = " << std::get<1>(property);
+  return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const std::pair<std::string, std::string> &property) {
+  os << std::get<0>(property) << " = " << std::get<1>(property);
+  return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const std::tuple<std::string, std::string> &property) {
+  os << std::get<0>(property) << " = " << std::get<1>(property);
+  return os;
+}
+
+template <typename T> std::ostream &dump_properties(std::ostream &os, const T &properties) {
   string sep = "";
-  for (const auto &property : m) {
-    os << property.first << " = " << property.second << sep;
+  for (const auto &property : properties) {
+    os << property << sep;
     string sep = ",";
   }
   return os;
 }
 
-template <typename Map> bool properties_eq(const string &text, const Map &expected) {
-  Map map_properties;
-  parse(text.begin(), text.end(), map_properties);
-  Map differences;
-  std::set_symmetric_difference(expected.begin(), expected.end(), map_properties.begin(), map_properties.end(),
+template <typename T, typename V> bool properties_eq(const string &text, const V &expected) {
+  T properties;
+  parse(text.begin(), text.end(), properties);
+  V differences;
+  std::set_symmetric_difference(expected.begin(), expected.end(), properties.begin(), properties.end(),
                                 std::inserter(differences, differences.end()));
   if (!differences.empty()) {
     std::cout << "Actual and expected differs on \"";
-    print_map(std::cout, differences) << "\"\n";
-    std::cout << "*** Debug: parse " << map_properties.size() << " properties\n";
+    dump_properties(std::cout, differences) << "\"\n";
+    std::cout << "*** Debug: parse " << properties.size() << " properties\n";
     return false;
   }
   return true;
