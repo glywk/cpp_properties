@@ -1,2 +1,3 @@
 declare_test(test_map_properties)
 declare_test(test_set_properties)
+declare_test(test_emplace_back_properties)

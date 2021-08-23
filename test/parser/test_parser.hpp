@@ -21,14 +21,29 @@ using namespace cp::token;
 // define macro for callback member function
 #define CALL_MEMBER_FN(member_function) ((*this).*(member_function))
 
+struct emplace_policy {
+public:
+  template <typename T, typename K, typename V> static void emplace(T &properties, K &&key, V &&value) {
+    properties.emplace_back(std::forward<K>(key), std::forward<V>(value));
+  }
+};
+
+struct emplace_back_adapter_policy {
+public:
+  template <typename T, typename K, typename V> static void emplace(T &properties, K &&key, V &&value) {
+    properties.emplace_back(std::forward<K>(key), std::forward<V>(value));
+  }
+};
+
 /*!
  * the key-value property traits to provide to visit the abstract syntax tree.
  */
-template <typename T, typename S = std::string> struct properties_actor_traits {
+template <typename T, typename S = std::string, typename E = emplace_policy> struct properties_actor_traits {
   // type of properties container output
   typedef T properties_type;
   // type of key,value property accepted by emplace method
   typedef S string_type;
+  typedef E emplacer_policy;
 };
 
 /*!
@@ -46,10 +61,13 @@ public:
   typedef typename Traits::string_type mapped_type;
   typedef std::pair<key_type, mapped_type> property_type;
 
+private:
+  typedef typename Traits::emplacer_policy emplacer_policy;
+
 public:
   ~properties_actor() {
     if (property) {
-      properties.emplace(std::move(property->first), std::move(property->second));
+      emplacer_policy::emplace(properties, std::move(property->first), std::move(property->second));
     }
   }
   properties_actor(properties_type &properties_reference)
@@ -60,7 +78,7 @@ public:
    * the next property read.
    */
   void push_back() {
-    properties.emplace(std::move(property->first), std::move(property->second));
+    emplacer_policy::emplace(properties, std::move(property->first), std::move(property->second));
     property = boost::none;
     current_reference = &properties_actor::allocate;
   }
@@ -110,10 +128,10 @@ bool tokenize_and_parse(Iterator first, Iterator last, T &cpp_properties) {
       first, last, lexer,
       [&action](const typename cp::cpp_properties_lexer<lexer_type>::token_type &token) { return action(token); });
 }
+template <typename T, typename Iterator, typename Traits = properties_actor_traits<T>>
+void parse(Iterator first, Iterator last, T &cpp_properties) {
 
-template <typename Map> void parse(string::const_iterator first, string::const_iterator last, Map &cpp_properties) {
-
-  bool success = tokenize_and_parse(first, last, cpp_properties);
+  bool success = tokenize_and_parse<T, Iterator, Traits>(first, last, cpp_properties);
 
   // print results
   if (!success) {
@@ -142,15 +160,24 @@ std::ostream &operator<<(std::ostream &os, const std::tuple<std::string, std::st
 template <typename T> std::ostream &dump_properties(std::ostream &os, const T &properties) {
   string sep = "";
   for (const auto &property : properties) {
-    os << property << sep;
-    string sep = ",";
+    os << sep << property;
+    sep = ",";
   }
   return os;
 }
 
+template <typename T> struct emplacer { typedef emplace_policy emplacer_policy; };
+
+template <typename T> struct emplacer<std::list<T>> { typedef emplace_back_adapter_policy emplacer_policy; };
+
+template <typename T> struct emplacer<std::vector<T>> { typedef emplace_back_adapter_policy emplacer_policy; };
+
 template <typename T, typename V> bool properties_eq(const string &text, const V &expected) {
+  typedef std::string::const_iterator Iterator;
+  typedef typename emplacer<T>::emplacer_policy emplacer_policy;
+  typedef properties_actor_traits<T, string, emplacer_policy> Traits;
   T properties;
-  parse(text.begin(), text.end(), properties);
+  parse<T, Iterator, Traits>(text.begin(), text.end(), properties);
   V differences;
   std::set_symmetric_difference(expected.begin(), expected.end(), properties.begin(), properties.end(),
                                 std::inserter(differences, differences.end()));
