@@ -11,6 +11,8 @@
 #include <cpp_properties/action/properties_action.hpp>
 #include <cpp_properties/lexer.hpp>
 
+#include <forward_list>
+
 using std::map;
 using std::string;
 
@@ -24,7 +26,7 @@ using namespace cp::token;
 struct emplace_policy {
 public:
   template <typename T, typename K, typename V> static void emplace(T &properties, K &&key, V &&value) {
-    properties.emplace_back(std::forward<K>(key), std::forward<V>(value));
+    properties.emplace(std::forward<K>(key), std::forward<V>(value));
   }
 };
 
@@ -32,6 +34,13 @@ struct emplace_back_adapter_policy {
 public:
   template <typename T, typename K, typename V> static void emplace(T &properties, K &&key, V &&value) {
     properties.emplace_back(std::forward<K>(key), std::forward<V>(value));
+  }
+};
+
+struct emplace_front_adapter_policy {
+public:
+  template <typename T, typename K, typename V> static void emplace(T &properties, K &&key, V &&value) {
+    properties.emplace_front(std::forward<K>(key), std::forward<V>(value));
   }
 };
 
@@ -139,7 +148,6 @@ void parse(Iterator first, Iterator last, T &cpp_properties) {
     std::cout << "Lexical analysis failed\n"
               << "stopped at: \"" << rest << "\"\n";
   }
-  return 0;
 }
 
 std::ostream &operator<<(std::ostream &os, const std::pair<const std::string, std::string> &property) {
@@ -172,6 +180,14 @@ template <typename T> struct emplacer<std::list<T>> { typedef emplace_back_adapt
 
 template <typename T> struct emplacer<std::vector<T>> { typedef emplace_back_adapter_policy emplacer_policy; };
 
+template <typename T> struct emplacer<std::forward_list<T>> { typedef emplace_front_adapter_policy emplacer_policy; };
+
+template <typename T> typename T::size_type size(T &properties) { return properties.size(); }
+
+template <typename T> typename std::forward_list<T>::size_type size(std::forward_list<T> &properties) {
+  return std::distance(properties.begin(), properties.end());
+}
+
 template <typename T, typename V> bool properties_eq(const string &text, const V &expected) {
   typedef std::string::const_iterator Iterator;
   typedef typename emplacer<T>::emplacer_policy emplacer_policy;
@@ -184,7 +200,7 @@ template <typename T, typename V> bool properties_eq(const string &text, const V
   if (!differences.empty()) {
     std::cout << "Actual and expected differs on \"";
     dump_properties(std::cout, differences) << "\"\n";
-    std::cout << "*** Debug: parse " << properties.size() << " properties\n";
+    std::cout << "*** Debug: parse " << size(properties) << " properties\n";
     return false;
   }
   return true;

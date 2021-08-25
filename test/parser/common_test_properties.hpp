@@ -69,4 +69,18 @@ template <typename T, typename V = T> void run_emplace_back_test() {
   }
 }
 
+template <typename T, typename V = std::vector<typename T::value_type>> void run_emplace_front_test() {
+
+  run_common_test<T, V>();
+
+  // duplicate keep all key insertion
+  {
+    BOOST_TEST((properties_eq<T, V>(R"(
+                                 k=v
+                                 k=v2
+                                 )",
+                                    {{"k", "v2"}, {"k", "v"}})));
+  }
+}
+
 #endif
