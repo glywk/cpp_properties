@@ -1,5 +1,5 @@
 //=============================================================================
-// Copyright (c) 2015-2018 glywk
+// Copyright (c) 2015-2021 glywk
 // https://github.com/glywk
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -18,6 +18,7 @@
 #include <iterator>
 #include <string>
 
+namespace cpp_properties {
 namespace detail {
 /*!
  * convert escape char to its given value or remove '\' when escape sequence is
@@ -176,5 +177,5 @@ std::basic_string<CharT> latin1_to_utf8(const boost::iterator_range<ForwardTrave
 
   return utf8;
 }
-
+} // namespace cpp_properties
 #endif

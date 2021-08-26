@@ -1,5 +1,5 @@
 //=============================================================================
-// Copyright (c) 2015-2018 glywk
+// Copyright (c) 2015-2021 glywk
 // https://github.com/glywk
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -11,6 +11,8 @@
 #include <cpp_properties/encoding/encoding.hpp>
 
 #include <cpp_properties/lexer.hpp>
+
+namespace cpp_properties {
 
 /*!
  * helper function to concatenate char range to the given string.
@@ -66,7 +68,7 @@ public:
 
   // the function operator gets called for each of the matched tokens
   template <typename Token> bool operator()(Token const &token) const {
-    using namespace cpp_properties::token;
+    using namespace token;
     switch (token.id()) {
     case ID_KEY_CHARS:
       actor.current().first += latin1_to_utf8(token.value());
@@ -120,5 +122,6 @@ private:
  * details.
  */
 template <typename Actor> properties_action<Actor> make_action(Actor &actor) { return properties_action<Actor>(actor); }
+} // namespace cpp_properties
 
 #endif
