@@ -11,7 +11,7 @@
 
 typedef std::pair<std::string, std::string> value_type;
 
-template <typename T> struct emplacer<std::deque<T>> { typedef emplace_front_adapter_policy emplacer_policy; };
+template <typename T> struct emplacer<std::deque<T>> { typedef cp::emplace_front_adapter_policy emplacer_policy; };
 
 int main(int argc, char *argv[]) {
 

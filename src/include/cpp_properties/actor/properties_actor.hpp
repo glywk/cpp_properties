@@ -24,8 +24,8 @@ public:
   typedef typename Traits::properties_type properties_type;
 
   // type of transient action key-value property
-  typedef typename Traits::string_type key_type;
-  typedef typename Traits::string_type mapped_type;
+  typedef typename Traits::key_type key_type;
+  typedef typename Traits::mapped_type mapped_type;
   typedef std::pair<key_type, mapped_type> property_type;
 
 private:
