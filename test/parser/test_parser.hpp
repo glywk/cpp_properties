@@ -11,7 +11,7 @@
 #include <cpp_properties/action/properties_action.hpp>
 #include <cpp_properties/actor/properties_actor.hpp>
 #include <cpp_properties/actor/traits/properties_actor_traits.hpp>
-#include <cpp_properties/lexer.hpp>
+#include <cpp_properties/parser.hpp>
 
 #include <forward_list>
 
@@ -22,27 +22,10 @@ namespace lex = boost::spirit::lex;
 namespace cp = cpp_properties;
 using namespace cp::token;
 
-/*!
- * tokenize the text and populate the output container
- */
-template <typename T, typename Iterator, typename Traits = cp::properties_actor_traits<T>,
-          typename Actor = cp::properties_actor<Traits>, typename Action = cp::properties_action<Actor>>
-bool tokenize_and_parse(Iterator first, Iterator last, T &cpp_properties) {
-  // create the token definition instance needed to invoke the lexical analyzer
-  using lexer_type = lex::lexertl::lexer<lex::lexertl::token<Iterator>>;
-  cp::cpp_properties_lexer<lexer_type> lexer;
-
-  Actor actor(cpp_properties);
-  Action action = std::move(make_action(actor));
-
-  return lex::tokenize(
-      first, last, lexer,
-      [&action](const typename cp::cpp_properties_lexer<lexer_type>::token_type &token) { return action(token); });
-}
 template <typename T, typename Iterator, typename Traits = cp::properties_actor_traits<T>>
 void parse(Iterator first, Iterator last, T &cpp_properties) {
 
-  bool success = tokenize_and_parse<T, Iterator, Traits>(first, last, cpp_properties);
+  bool success = cp::parse<T, Iterator, Traits>(first, last, cpp_properties);
 
   // print results
   if (!success) {

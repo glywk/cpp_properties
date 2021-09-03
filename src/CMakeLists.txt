@@ -29,6 +29,7 @@ target_sources(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cpp_properties/actor/traits/properties_actor_traits.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cpp_properties/encoding/encoding.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cpp_properties/lexer.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cpp_properties/parser.hpp
 )
 
 add_library(glywk::cpp_properties ALIAS cpp_properties)
