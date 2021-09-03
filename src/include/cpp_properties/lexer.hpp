@@ -1,7 +1,7 @@
 //=============================================================================
-// Copyright (c) 2015-2018 glywk
+// Copyright (c) 2015-2021 glywk
 // https://github.com/glywk
-// 
+//
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //=============================================================================
@@ -109,7 +109,7 @@ struct cpp_properties_lexer : lex::lexer<Lexer>
             ("escape"      , "\\\\[^\\r\\n]")
         ;
 
-        this->self("INITIAL").add 
+        this->self("INITIAL").add
             ("{spaces}"      , ID_SPACES)
             ("{cr}"          , ID_CR)
             ("{lf}"          , ID_LF)

@@ -1,14 +1,14 @@
 //=============================================================================
-// Copyright (c) 2015-2018 glywk
+// Copyright (c) 2015-2021 glywk
 // https://github.com/glywk
-// 
+//
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //=============================================================================
 #include <test_lexer.hpp>
 
 int main(int argc, char* argv[]) {
-  
+
   // blanks and spaces
     {
         BOOST_TEST(test("" ,

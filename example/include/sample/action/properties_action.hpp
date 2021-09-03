@@ -1,5 +1,5 @@
 //=============================================================================
-// Copyright (c) 2015-2018 glywk
+// Copyright (c) 2015-2021 glywk
 // https://github.com/glywk
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying

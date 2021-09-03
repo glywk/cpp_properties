@@ -1,14 +1,14 @@
 //=============================================================================
-// Copyright (c) 2015-2018 glywk
+// Copyright (c) 2015-2021 glywk
 // https://github.com/glywk
-// 
+//
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //=============================================================================
 
 // its purpose is to simply read a java like property file and to print the
 // key-value pairs on the standard output. This example also substitute escape
-// sequence and unicode code point by their utf-8 character representation.  
+// sequence and unicode code point by their utf-8 character representation.
 
 // #define BOOST_SPIRIT_LEXERTL_DEBUG
 
@@ -94,7 +94,7 @@ private:
     // the temporary property
     std::reference_wrapper<property_type> property;
 
-    // callback for lazy initialization of current property pair 
+    // callback for lazy initialization of current property pair
     typedef property_type & (properties_actor::*current_reference_callback)();
     // the callback to retrieve the current property reference
     current_reference_callback current_reference;
@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
     // read input from the given file
     std::string str(read_from_file(1 == argc ? "full.properties" : argv[1]));
 
-    // tokenize the given string, the bound functor gets invoked for each of 
+    // tokenize the given string, the bound functor gets invoked for each of
     // the matched tokens
     char const* first = str.c_str();
     char const* last = &first[str.size()];
