@@ -16,6 +16,7 @@
 #include <functional>
 #include <iostream>
 #include <iterator>
+#include <locale>
 #include <string>
 
 namespace cpp_properties {
