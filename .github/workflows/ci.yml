@@ -96,7 +96,7 @@ jobs:
         fi
 
     - name: Prepare environment
-      run: sudo apt-get install -y ${{matrix.other_pkgs}}
+      run: sudo apt-get install -y ninja-build ${{matrix.other_pkgs}}
 
     - name: Configure cmake
       working-directory: ${{runner.workspace}}
@@ -111,7 +111,8 @@ jobs:
         cmake -B${{github.workspace}}/build -H$GITHUB_WORKSPACE \
               -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
               -DCMAKE_CXX_STANDARD=${{matrix.std}} \
-              -DCMAKE_CXX_EXTENSIONS=OFF
+              -DCMAKE_CXX_EXTENSIONS=OFF \
+              -G Ninga
 
     - name: Build
       # Build your program with the given configuration
