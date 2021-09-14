@@ -95,6 +95,9 @@ jobs:
           done
         fi
 
+    - name: Prepare environment
+      run: sudo apt-get install -y ${{matrix.other_pkgs}}
+
     - name: Configure cmake
       working-directory: ${{runner.workspace}}
       env:
