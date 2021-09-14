@@ -95,7 +95,7 @@ jobs:
           done
         fi
 
-    - name: Configure build
+    - name: Configure cmake
       working-directory: ${{runner.workspace}}
       env:
         CXX: ${{matrix.cxx}}
