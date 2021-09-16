@@ -12,9 +12,9 @@
 
 // #define BOOST_SPIRIT_LEXERTL_DEBUG
 
-#include <sample/encoding/encoding.hpp>
 #include <sample/io/file.hpp>
-#include <sample/action/properties_action.hpp>
+
+#include <cpp_properties/action/properties_action.hpp>
 
 #include <iostream>
 #include <vector>
@@ -101,23 +101,25 @@ private:
 };
 
 /*!
+ * helper function to build a property action based on a visitor fields to hide
+ * details.
+ */
+template <typename Actor> cp::properties_action<Actor> make_action(Actor &actor) {
+  return cp::properties_action<Actor>(actor);
+}
+
+/*!
  * tokenize the text and populate the output container
  */
-template<
-    typename Traits,
-    typename Actor = properties_actor<Traits>,
-    typename Action = properties_action<Actor>
->
-bool tokenize_and_parse(char const* first, char const* last, typename Traits::properties_type & cpp_properties) {
-    // create the token definition instance needed to invoke the lexical analyzer
-    cp::cpp_properties_lexer<lex::lexertl::lexer<> > lexer;
+template <typename Traits, typename Actor = properties_actor<Traits>, typename Action = cp::properties_action<Actor>>
+bool tokenize_and_parse(char const *first, char const *last, typename Traits::properties_type &cpp_properties) {
+  // create the token definition instance needed to invoke the lexical analyzer
+  cp::cpp_properties_lexer<lex::lexertl::lexer<>> lexer;
 
-    Actor actor(cpp_properties);
-    Action action = std::move(make_action(actor));
+  Actor actor(cpp_properties);
+  Action action = std::move(make_action(actor));
 
-    return lex::tokenize(first, last, lexer, [&action](auto token) {
-        return action(token);
-    });
+  return lex::tokenize(first, last, lexer, [&action](auto token) { return action(token); });
 }
 
 /*!

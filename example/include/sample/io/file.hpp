@@ -9,6 +9,7 @@
 #define CPP_PROPERTIES_EXAMPLE_FILE_HPP
 
 #include <fstream>
+#include <iostream>
 #include <string>
 
 /*!

@@ -14,8 +14,7 @@
 #include "boost/property_tree/ptree.hpp"
 //#include "boost/property_tree/detail/properties_parser_utils.hpp"
 
-#include <sample/action/properties_action.hpp>
-#include <sample/encoding/encoding.hpp>
+#include <cpp_properties/action/properties_action.hpp>
 
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <boost/spirit/include/lex_lexertl.hpp>
@@ -104,6 +103,14 @@ template <typename Ch>
 typename basic_file_iterator<Ch>::type make_file_iterator(std::basic_istream<Ch> &input, const std::string &filename) {
   return typename basic_file_iterator<Ch>::type(spirit::make_default_multi_pass(std::istreambuf_iterator<Ch>(input)),
                                                 spirit::multi_pass<std::istreambuf_iterator<Ch>>(), filename);
+}
+
+/*!
+ * helper function to build a property action based on a visitor fields to hide
+ * details.
+ */
+template <typename Actor> cpp_properties::properties_action<Actor> make_action(Actor &actor) {
+  return cpp_properties::properties_action<Actor>(actor);
 }
 
 template <class Ch> struct properties_parser {
