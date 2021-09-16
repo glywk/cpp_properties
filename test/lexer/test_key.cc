@@ -7,7 +7,8 @@
 //=============================================================================
 #include <test_lexer.hpp>
 
-int main(int argc, char* argv[]) {
+int main() {
+  // clang-format off
 
     // key
     {
@@ -149,6 +150,7 @@ int main(int argc, char* argv[]) {
                        {"\\="       , ID_KEY_ESCAPE_CHAR}
                   }));
     }
+  // clang-format on
 
   return boost::report_errors();
 }

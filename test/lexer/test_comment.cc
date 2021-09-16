@@ -7,9 +7,10 @@
 //=============================================================================
 #include <test_lexer.hpp>
 
-int main(int argc, char* argv[]) {
+int main() {
+  // clang-format off
 
-  // blanks and spaces
+    // blanks and spaces
     {
         BOOST_TEST(test("" ,
                   {
@@ -107,6 +108,7 @@ int main(int argc, char* argv[]) {
                        {"\n"   , ID_COMMENT_LF}
                   }));
     }
+  // clang-format on
 
   return boost::report_errors();
 }

@@ -13,7 +13,7 @@ typedef std::pair<std::string, std::string> value_type;
 
 template <typename T> struct emplacer<std::deque<T>> { typedef cp::emplace_front_adapter_policy emplacer_policy; };
 
-int main(int argc, char *argv[]) {
+int main() {
 
   run_emplace_front_test<std::forward_list<value_type>>();
   run_emplace_front_test<std::deque<value_type>>();

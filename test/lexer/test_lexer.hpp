@@ -27,9 +27,9 @@ namespace cp = cpp_properties;
 using namespace cp::token;
 
 struct expected_token {
-    int id;
-    string value;
-    expected_token(string text, int token_id):id(token_id), value(text) {}
+  unsigned long id;
+  string value;
+  expected_token(string text, int token_id) : id(token_id), value(text) {}
 };
 
 class tokenizer {

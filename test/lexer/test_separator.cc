@@ -7,7 +7,8 @@
 //=============================================================================
 #include <test_lexer.hpp>
 
-int main(int argc, char* argv[]) {
+int main() {
+  // clang-format off
 
     // separator
     {
@@ -91,6 +92,6 @@ int main(int argc, char* argv[]) {
                        {"v"     , ID_VALUE_CHARS}
                   }));
     }
-
+  // clang-format on
   return boost::report_errors();
 }

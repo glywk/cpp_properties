@@ -129,7 +129,7 @@ template <class Ch> struct properties_parser {
 // Build ptree from properties stream
 template <class Ptree, class Ch>
 void read_properties_internal(std::basic_istream<Ch> &stream, Ptree &pt, const std::string &filename,
-                              int include_depth) {
+                              int /*include_depth*/) {
   namespace lexertl = boost::spirit::lex::lexertl;
   using boost::spirit::lex::tokenize;
   using cpp_properties::cpp_properties_lexer;
