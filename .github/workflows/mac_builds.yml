@@ -1,4 +1,4 @@
-name: CMake
+name: Mac builds
 
 on:
   push:
