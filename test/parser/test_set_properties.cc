@@ -17,7 +17,7 @@ struct less_key {
   bool operator()(const value_type &lhs, const value_type &rhs) const { return std::get<0>(lhs) < std::get<0>(rhs); }
 };
 
-int main(int argc, char *argv[]) {
+int main() {
 
   run_set_test<std::set<value_type, less_key>>();
   run_set_test<boost::container::flat_set<value_type, less_key>>();

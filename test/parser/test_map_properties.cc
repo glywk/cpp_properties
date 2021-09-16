@@ -11,7 +11,7 @@
 
 #include <map>
 
-int main(int argc, char *argv[]) {
+int main() {
 
   run_map_test<std::map<std::string, std::string>>();
   run_map_test<boost::container::flat_map<std::string, std::string>>();
