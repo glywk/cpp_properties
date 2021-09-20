@@ -29,7 +29,7 @@ jobs:
 
       - name: Configure cmake
         working-directory: ${{runner.workspace}}
-        env:
+        #env:
         #  CXX: ${{matrix.cxx}}
         #  CXXFLAGS: ${{matrix.cxxflags}}
         # Note: $GITHUB_WORKSPACE is distinct from ${{runner.workspace}}.
