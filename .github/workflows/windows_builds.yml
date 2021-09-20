@@ -19,7 +19,7 @@ jobs:
         cxx:
           # - g++-10
           #- clang++
-          msvc-2016
+          - msvc-2016
         build_type: [Debug, Release]
         std: [14]
 
