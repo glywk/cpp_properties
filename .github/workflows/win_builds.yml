@@ -16,10 +16,6 @@ jobs:
     runs-on: windows-2016
     strategy:
       matrix:
-        cxx:
-          # - g++-10
-          #- clang++
-          - msvc-2016
         build_type: [Debug, Release]
         std: [14]
 
