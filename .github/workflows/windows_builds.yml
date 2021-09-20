@@ -26,12 +26,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     # Install dependencies
-    - name: Install boost
-      uses: MarkusJx/install-boost@v2.0.0
-      id: install-boost
-      with:
-        boost_version: 1.76.0
-        platform_version: 2016
+    #- name: Install boost
+    #  uses: MarkusJx/install-boost@v2.0.0
+    #  id: install-boost
+    #  with:
+    #    boost_version: 1.76.0
+    #    platform_version: 2016
 
     - name: Configure cmake
       working-directory: ${{runner.workspace}}
