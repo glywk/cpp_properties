@@ -21,16 +21,17 @@ jobs:
     runs-on: windows-2016
     steps:
       - uses: actions/checkout@v2
-      # Install dependencies
-      #- name: Install boost
-      #  uses: MarkusJx/install-boost@v2.0.0
-      #  id: install-boost
-      #  with:
-      #    boost_version: 1.76.0
-      #    platform_version: 2016
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
+
+      # Install dependencies
+      - name: Install boost
+        uses: MarkusJx/install-boost@v2.0.0
+        id: install-boost
+        with:
+          boost_version: 1.76.0
+          platform_version: 2016
 
       - name: Configure cmake
         working-directory: ${{runner.workspace}}
@@ -43,10 +44,7 @@ jobs:
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
         shell: cmd
         run: |
-          cmake -B${{github.workspace}}/build -H%GITHUB_WORKSPACE% \
-                -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
-                -DCMAKE_CXX_STANDARD=${{matrix.std}} \
-                -DCMAKE_CXX_EXTENSIONS=OFF
+          cmake -B${{github.workspace}}/build -H%GITHUB_WORKSPACE% -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_CXX_STANDARD=${{matrix.std}} -DCMAKE_CXX_EXTENSIONS=OFF
 
       - name: Build
         # Build your program with the given configuration
