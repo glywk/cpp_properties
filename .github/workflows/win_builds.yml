@@ -15,7 +15,7 @@ jobs:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     strategy:
       matrix:
-        build_type: [ Debug, Release ]
+        build_type: [ Debug] #, Release ]
         std: [ 14 ]
 
     runs-on: windows-2016
@@ -35,7 +35,8 @@ jobs:
 
       - name: Configure cmake
         working-directory: ${{runner.workspace}}
-        #env:
+        env:
+          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
         #  CXX: ${{matrix.cxx}}
         #  CXXFLAGS: ${{matrix.cxxflags}}
         # Note: $GITHUB_WORKSPACE is distinct from ${{runner.workspace}}.
