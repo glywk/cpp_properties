@@ -75,15 +75,30 @@ template <typename T> typename std::forward_list<T>::size_type size(std::forward
   return std::distance(properties.begin(), properties.end());
 }
 
+template <typename ForwardTraversalIterator,
+          typename T = typename std::remove_cv<typename ForwardTraversalIterator::value_type>::type>
+std::list<T> make_sorted_collection(const boost::iterator_range<ForwardTraversalIterator> &sequence) {
+  std::list<T> collection;
+  for (auto &&item : sequence) {
+    collection.insert(std::upper_bound(collection.begin(), collection.end(), item), item);
+  }
+  return collection;
+}
+
 template <typename T, typename V> bool properties_eq(const string &text, const V &expected) {
   typedef std::string::const_iterator Iterator;
   typedef typename emplacer<T>::emplacer_policy emplacer_policy;
   typedef cp::properties_actor_traits<T, string, emplacer_policy> Traits;
+
   T properties;
   parse<T, Iterator, Traits>(text.begin(), text.end(), properties);
+
+  const auto sorted_properties = make_sorted_collection(boost::make_iterator_range(properties));
+  const auto sorted_expected = make_sorted_collection(boost::make_iterator_range(expected));
   V differences;
-  std::set_symmetric_difference(expected.begin(), expected.end(), properties.begin(), properties.end(),
-                                std::inserter(differences, differences.end()));
+  std::set_symmetric_difference(sorted_expected.begin(), sorted_expected.end(), sorted_properties.begin(),
+                                sorted_properties.end(), std::inserter(differences, differences.end()));
+
   if (!differences.empty()) {
     std::cout << "Actual and expected differs on \"";
     dump_properties(std::cout, differences) << "\"\n";

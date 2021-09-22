@@ -79,7 +79,7 @@ template <typename T, typename V = std::vector<typename T::value_type>> void run
                                  k=v
                                  k=v2
                                  )",
-                                    {{"k", "v2"}, {"k", "v"}})));
+                                    {{"k", "v"}, {"k", "v2"}})));
   }
 }
 
