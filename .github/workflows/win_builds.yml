@@ -15,7 +15,7 @@ jobs:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     strategy:
       matrix:
-        build_type: [ Debug] #, Release ]
+        build_type: [ Debug, Release ]
         std: [ 14 ]
 
     runs-on: windows-2016

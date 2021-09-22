@@ -1,6 +1,7 @@
 [![License](https://img.shields.io/badge/License-Boost%201.0-lightblue.svg)](https://www.boost.org/LICENSE_1_0.txt)
 [![Linux builds](https://github.com/glywk/cpp_properties/actions/workflows/linux_builds.yml/badge.svg)](https://github.com/glywk/cpp_properties/actions/workflows/linux_builds.yml)
 [![Mac builds](https://github.com/glywk/cpp_properties/actions/workflows/mac_builds.yml/badge.svg)](https://github.com/glywk/cpp_properties/actions/workflows/mac_builds.yml)
+[![Windows builds](https://github.com/glywk/cpp_properties/actions/workflows/win_builds.yml/badge.svg)](https://github.com/glywk/cpp_properties/actions/workflows/win_builds.yml)
 
 cpp_properties
 ==============
