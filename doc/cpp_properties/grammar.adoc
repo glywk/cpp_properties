@@ -1,0 +1,35 @@
+////
+Copyright (c) 2015-2021 glywk
+Distributed under the Boost Software License, Version 1.0.
+https://www.boost.org/LICENSE_1_0.txt
+////
+
+[#Grammar]
+# Properties grammar
+:idprefix: grammar_
+
+## EBNF
+* properties
+
+image::images/properties.svg[]
+* comment
+
+* space
+
+* end-of-property
+
+* end-of-line
+* blanks
+* line-break
+* key
+* first-key-chars
+* key-chars
+* separator
+* separator-blanks
+* separator-chars
+* value
+* value-chars
+* escape
+* escape-chars
+* unicode
+* hexa-chars
