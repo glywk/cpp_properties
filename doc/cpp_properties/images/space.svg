@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="railroad-diagram" width="285" height="109" viewBox="0 0 285 109">
+    <g transform="translate(.5 .5)">
+        <g>
+            <path d="M20 30v20m0 -10h20"></path>
+        </g>
+        <g>
+            <path d="M40 40h0"></path>
+            <path d="M245 40h0"></path>
+            <path d="M40 40a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path>
+            <g>
+                <path d="M60 20h165"></path>
+            </g>
+            <path d="M225 20a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path>
+            <path d="M40 40h20"></path>
+            <g>
+                <path d="M60 40h0"></path>
+                <path d="M225 40h0"></path>
+                <path d="M60 40h10"></path>
+                <g>
+                    <path d="M70 40h0"></path>
+                    <path d="M215 40h0"></path>
+                    <path d="M70 40h20"></path>
+                    <g class="non-terminal">
+                        <path d="M90 40h17"></path>
+                        <path d="M178 40h17"></path>
+                        <rect x="107" y="29" width="71" height="22"></rect>
+                        <text x="142.5" y="44">blanks</text>
+                    </g>
+                    <path d="M195 40h20"></path>
+                    <path d="M70 40a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path>
+                    <g class="non-terminal">
+                        <path d="M90 70h0"></path>
+                        <path d="M195 70h0"></path>
+                        <rect x="90" y="59" width="105" height="22"></rect>
+                        <text x="142.5" y="74">line-break</text>
+                    </g>
+                    <path d="M195 70a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path>
+                </g>
+                <path d="M215 40h10"></path>
+                <path d="M70 40a10 10 0 0 0 -10 10v29a10 10 0 0 0 10 10"></path>
+                <g>
+                    <path d="M70 89h145"></path>
+                </g>
+                <path d="M215 89a10 10 0 0 0 10 -10v-29a10 10 0 0 0 -10 -10"></path>
+            </g>
+            <path d="M225 40h20"></path>
+        </g>
+        <path d="M 245 40 h 20 m 0 -10 v 20"></path>
+    </g>
+    <style>
+        svg {
+        }
+        path {
+        stroke-width: 3;
+        stroke: black;
+        fill: rgba(0,0,0,0);
+        }
+        text {
+        font: bold 14px monospace;
+        text-anchor: middle;
+        white-space: pre;
+        }
+        text.diagram-text {
+        font-size: 12px;
+        }
+        text.diagram-arrow {
+        font-size: 16px;
+        }
+        text.label {
+        text-anchor: start;
+        }
+        text.comment {
+        font: italic 12px monospace;
+        }
+        g.non-terminal text {
+        /*font-style: italic;*/
+        }
+        rect {
+        stroke-width: 3;
+        stroke: black;
+        fill: hsl(120,100%,90%);
+        }
+        path.diagram-text {
+        stroke-width: 3;
+        stroke: black;
+        fill: white;
+        cursor: help;
+        }
+        g.diagram-text:hover path.diagram-text {
+        fill: #eee;
+        }
+    </style>
+</svg>

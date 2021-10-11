@@ -12,24 +12,75 @@ https://www.boost.org/LICENSE_1_0.txt
 * properties
 
 image::images/properties.svg[]
+
 * comment
+
+image::images/comment.svg[]
 
 * space
 
+image::images/space.svg[]
+
 * end-of-property
 
+image::images/end-of-property.svg[]
+
 * end-of-line
+
+image::images/end-of-line.svg[]
+
 * blanks
+
+image::images/blanks.svg[]
+
 * line-break
+
+image::images/line-break.svg[]
+
 * key
+
+image::images/key.svg[]
+
 * first-key-chars
+
+image::images/first-keys-chars.svg[]
+
 * key-chars
+
+image::images/key-chars.svg[]
+
 * separator
+
+image::images/separator.svg[]
+
 * separator-blanks
+
+image::images/separator-blanks.svg[]
+
 * separator-chars
+
+image::images/separator-chars.svg[]
+
 * value
+
+image::images/value.svg[]
+
 * value-chars
+
+image::images/value.svg[]
+
 * escape
+
+image::images/escape.svg[]
+
 * escape-chars
+
+image::images/escape-chars.svg[]
+
 * unicode
+
+image::images/unicode.svg[]
+
 * hexa-chars
+
+image::images/hexa-chars.svg[]
