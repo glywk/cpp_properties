@@ -1,0 +1,31 @@
+////
+Copyright (c) 2015-2021 glywk
+Distributed under the Boost Software License, Version 1.0.
+https://www.boost.org/LICENSE_1_0.txt
+////
+
+[#overview]
+# Overview
+:idprefix: overview_
+
+## Description
+This library provides a complete lexer/parser to produce a property abstract syntax tree according to the java properties grammar (https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html).
+
+## Requirements
+The library requires only {cpp}11
+
+## Header-Only
+To use as header-only; that is, to eliminate the requirement to link a program to a static or dynamic cpp_properties library, simply place the following lines in exactly one new or existing source file in your project.
+```
+#include <cpp_properties/action/properties_action.hpp>
+#include <cpp_properties/actor/properties_actor.hpp>
+#include <cpp_properties/actor/traits/properties_actor_traits.hpp>
+#include <cpp_properties/parser.hpp>
+```
+## Dependencies
+This library internally use Boost.Spirit/lex
+
+## Supported Compilers
+GCC 5 or later with -std=c++11 or above
+Clang 3.5 or later with -std=c++11 or above
+Visual Studio 2015, 2017, 2019
