@@ -34,11 +34,15 @@ target_sources(
 
 add_library(glywk::cpp_properties ALIAS cpp_properties)
 
-include(GNUInstallDirs)
+# if subpoject,skip install
+if(NEED_INSTALL)
 
-install(
-  DIRECTORY ${PROJECT_SOURCE_DIR}/include/
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-  FILES_MATCHING
-  PATTERN "*.hpp"
-)
+  include(GNUInstallDirs)
+
+  install(
+    DIRECTORY ${PROJECT_SOURCE_DIR}/include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILES_MATCHING
+    PATTERN "*.hpp"
+  )
+endif()
