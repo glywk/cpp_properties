@@ -323,6 +323,75 @@ value.unicode.escape.is.case.sensitive=U263a[\U263a],U263B[\U263B]
 single.key=
 ```
 
+Simply Example
+---------
+
+cpp_properties_parse_test.cpp
+
+```c++
+#include <cpp_properties/action/properties_action.hpp>
+#include <cpp_properties/actor/properties_actor.hpp>
+#include <cpp_properties/actor/traits/properties_actor_traits.hpp>
+#include <cpp_properties/parser.hpp>
+#include <map>
+
+static const std::string DEFAULT_PROPERTIES = R"(
+# Message Queue Type(REDIS,MQTT)
+mq.implType=MQTT
+# connect host
+mq.connect.host=127.0.0.1
+# connect port
+mq.connect.port=1883
+# user name for connections
+#mq.connect.username=
+# password for connections
+#mq.connect.password=
+# timeout(mills)
+#mq.connect.timeout_ms=
+# max count of reconnection
+#mq.connect.max_reconnects=
+# interval(mills) of reconnection
+#mq.connect.reconnect_interval_ms=
+)";
+
+/*!
+ * the main function simply parse the given proerties string into  
+ * std::map<std::string, std::string>,if sucess,output all key=value to console.
+ */
+int main(int argc, char* argv[])
+{
+
+  std::map<std::string, std::string> cpp_properties;
+  auto success = cpp_properties::parse(DEFAULT_PROPERTIES.begin(), DEFAULT_PROPERTIES.end(), cpp_properties);
+  // print results
+  if (success) {
+      for (auto p : cpp_properties) {
+          std::cout << p.first << '=' << p.second << "\n";
+      }
+  } else {
+      std::cout << "Lexical analysis failed\n"
+          << "stopped at: \"" << DEFAULT_PROPERTIES << "\"\n";
+  }
+  return 0;
+}
+```
+
+build the source:
+
+```
+g++ -o cpp_properties_parse_test -std=c++11 -I ${BOOST_INCLUDE_DIR} -I ${CPP_PROPERTIES_DIR}/src/include -Wno-deprecated-declarations cpp_properties_parse_test.cpp
+```
+
+run executable  program  `cpp_properties_parse_test` ,console output:
+
+```bash
+./cpp_properties_parse_test
+mq.connect.host=127.0.0.1
+mq.connect.port=1883
+mq.implType=MQTT
+```
+
+
 Compiling
 ---------
 
