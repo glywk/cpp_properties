@@ -55,15 +55,15 @@ add_subdirectory(src)
 # Example
 if(CPP_PROPERTIES_BUILD_EXAMPLE)
   add_subdirectory(example)
-endif(CPP_PROPERTIES_BUILD_EXAMPLE)
+endif()
 
 # Unit tests
 if(CPP_PROPERTIES_BUILD_TEST)
   enable_testing()
   add_subdirectory(test)
-endif(CPP_PROPERTIES_BUILD_TEST)
+endif()
 
 # Documentation
 if(CPP_PROPERTIES_BUILD_DOC)
   add_subdirectory(doc)
-endif(CPP_PROPERTIES_BUILD_DOC)
+endif()
