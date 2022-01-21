@@ -34,9 +34,7 @@ target_sources(
 
 add_library(glywk::cpp_properties ALIAS cpp_properties)
 
-# if subpoject,skip install
-if(NEED_INSTALL)
-
+if(CPP_PROPERTIES_INSTALL)
   include(GNUInstallDirs)
 
   install(
