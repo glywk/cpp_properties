@@ -1,6 +1,25 @@
 cmake_minimum_required(VERSION 3.10)
 project(cpp_properties)
 
+if(POLICY CMP0077)
+  cmake_policy(SET CMP0077 NEW)
+endif()
+
+# Project options
+get_directory_property(hasParent PARENT_DIRECTORY)
+if(hasParent)
+  # project is include as subproject
+  option(CPP_PROPERTIES_BUILD_EXAMPLE "Build examples" OFF)
+  option(CPP_PROPERTIES_BUILD_TEST "Build tests" OFF)
+  option(CPP_PROPERTIES_BUILD_DOC "Generate documentation" OFF)
+  option(CPP_PROPERTIES_INSTALL "Add cpp_properties in install target" OFF)
+else()
+  option(CPP_PROPERTIES_BUILD_EXAMPLE "Build examples" ON)
+  option(CPP_PROPERTIES_BUILD_TEST "Build tests" ON)
+  option(CPP_PROPERTIES_BUILD_DOC "Generate documentation" ON)
+  option(CPP_PROPERTIES_INSTALL "Add cpp_properties in install target" ON)
+endif()
+
 # Activate warnings
 if(DEFINED CMAKE_CXX_COMPILER_ID)
   if(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR ${CMAKE_CXX_COMPILER_ID} STREQUAL
@@ -34,11 +53,17 @@ set(CONFIGURED_ONCE
 add_subdirectory(src)
 
 # Example
-add_subdirectory(example)
+if(CPP_PROPERTIES_BUILD_EXAMPLE)
+  add_subdirectory(example)
+endif()
 
 # Unit tests
-enable_testing()
-add_subdirectory(test)
+if(CPP_PROPERTIES_BUILD_TEST)
+  enable_testing()
+  add_subdirectory(test)
+endif()
 
 # Documentation
-add_subdirectory(doc)
+if(CPP_PROPERTIES_BUILD_DOC)
+  add_subdirectory(doc)
+endif()

@@ -9,9 +9,79 @@ cpp_properties
 > This library provides a complete lexer to produce a property abstract syntax tree
 according to the java properties grammar (https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html).
 
+Basic usage
+-----------
+
+basic_usage.cpp
+
+```c++
+#include <cpp_properties/action/properties_action.hpp>
+#include <cpp_properties/actor/properties_actor.hpp>
+#include <cpp_properties/actor/traits/properties_actor_traits.hpp>
+#include <cpp_properties/parser.hpp>
+#include <map>
+
+static const std::string DEFAULT_PROPERTIES = R"(
+## message queue type (REDIS,MQTT)
+mq.implType=MQTT
+## connect host
+mq.connect.host=127.0.0.1
+## connect port
+mq.connect.port=1883
+## user name for connections
+# mq.connect.username=
+##password for connections
+# mq.connect.password=
+## timeout (milliseconds)
+# mq.connect.timeout_ms=
+## max count of reconnection
+# mq.connect.max_reconnects=
+## interval of reconnection (milliseconds)
+# mq.connect.reconnect_interval_ms=
+)";
+
+ /*
+  * the main function parses the given properties string into a
+  * std::map<std::string, std::string>. Successfully extraction
+  * displays '<key>=<value>' pairs to the console
+  */
+int main(int argc, char* argv[])
+{
+  std::map<std::string, std::string> cpp_properties;
+  auto success = cpp_properties::parse(DEFAULT_PROPERTIES.begin(), DEFAULT_PROPERTIES.end(), cpp_properties);
+  
+  if (!success) {
+      std::cout << "Lexical analysis failed" << std::endl;
+      return 1;
+  }
+  
+  // print key, value pairs
+  for (auto p : cpp_properties) {
+      std::cout << p.first << '=' << p.second << std::endl;
+  }
+
+  return 0;
+}
+```
+
+build the source:
+
+```
+g++ -o cpp_properties_basic_usage -std=c++11 -I ${BOOST_INCLUDE_DIR} -I ${CPP_PROPERTIES_DIR}/src/include -Wno-deprecated-declarations basic_usage.cpp
+```
+
+run executable program `cpp_properties_basic_usage`, console output:
+
+```bash
+./cpp_properties_basic_usage
+mq.connect.host=127.0.0.1
+mq.connect.port=1883
+mq.implType=MQTT
+```
+
 Overview
 --------
-Example directory shows how to parse following valid java property file in different structures:
+Many more examples are availables in Example directory. It shows how to parse following valid java property file in different structures:
 * The [simple_reader.cc](example/simple_reader/simple_reader.cc) example loads a property file in a collection of key/value.
 * The [properties_tree.cc](example/properties_tree/properties_tree.cc) example loads a property file in a [boost::property_tree](https://www.boost.org/doc/libs/1_70_0/doc/html/property_tree.html).
 
