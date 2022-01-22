@@ -7,9 +7,68 @@ https://www.boost.org/LICENSE_1_0.txt
 [#overview]
 # Overview
 :idprefix: overview_
+:source-highlighter: highlight.js
+:highlightjs-languages: properties
 
 ## Description
 This library provides a complete lexer/parser to produce a property abstract syntax tree according to the java properties grammar (https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html).
+
+It supports all kinds of properties configuration styles:
+
+* Common java properties
+
+[source, properties]
+----
+! Config file for mosquitto
+
+retry_interval=20
+#sys_interval=10
+
+address=127.0.0.1:8085    \
+        192.168.0.12:6036 \
+        192.168.0.0:8036
+
+auth_opt_db_host=127.0.0.1
+auth_opt_db_port=80
+auth_opt_db_username=john.doe
+auth_opt_db_password=dummy
+----
+
+* Linux configuration file
+
+[source, properties]
+----
+# Config file for mosquitto
+
+retry_interval       20
+#sys_interval        10
+
+address              127.0.0.1:8085    \
+                     192.168.0.12:6036 \
+                     192.168.0.0:8036
+
+auth_opt_db_host     127.0.0.1
+auth_opt_db_port     80
+auth_opt_db_username john.doe
+auth_opt_db_password dummy
+----
+
+* YAML like
+
+[source, properties]
+----
+# Config file for mosquitto
+
+retry_interval:       20
+#sys_interval:        10
+
+address: 127.0.0.1:8085 192.168.0.12:6036 192.168.0.0:8036
+
+auth_opt_db_host:     127.0.0.1
+auth_opt_db_port:     80
+auth_opt_db_username: john.doe
+auth_opt_db_password: dummy
+----
 
 ## Requirements
 The library requires only {cpp}11
