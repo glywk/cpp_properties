@@ -9,6 +9,60 @@ cpp_properties
 > This library provides a complete lexer to produce a property abstract syntax tree
 according to the java properties grammar (https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html).
 
+It supports all kinds of properties configuration styles:
+
+* Common java properties
+
+``` properties
+! Config file for mosquitto
+
+retry_interval=20
+#sys_interval=10
+
+address=127.0.0.1:8085    \
+        192.168.0.12:6036 \
+        192.168.0.0:8036
+
+auth_opt_db_host=127.0.0.1
+auth_opt_db_port=80
+auth_opt_db_username=john.doe
+auth_opt_db_password=dummy
+```
+
+* Linux configuration file
+
+``` properties
+# Config file for mosquitto
+
+retry_interval       20
+#sys_interval        10
+
+address              127.0.0.1:8085    \
+                     192.168.0.12:6036 \
+                     192.168.0.0:8036
+
+auth_opt_db_host     127.0.0.1
+auth_opt_db_port     80
+auth_opt_db_username john.doe
+auth_opt_db_password dummy
+```
+
+* YAML like
+
+``` properties
+# Config file for mosquitto
+
+retry_interval:       20
+#sys_interval:        10
+
+address: 127.0.0.1:8085 192.168.0.12:6036 192.168.0.0:8036
+
+auth_opt_db_host:     127.0.0.1
+auth_opt_db_port:     80
+auth_opt_db_username: john.doe
+auth_opt_db_password: dummy
+```
+
 Basic usage
 -----------
 
@@ -49,12 +103,12 @@ int main(int argc, char* argv[])
 {
   std::map<std::string, std::string> cpp_properties;
   auto success = cpp_properties::parse(DEFAULT_PROPERTIES.begin(), DEFAULT_PROPERTIES.end(), cpp_properties);
-  
+
   if (!success) {
       std::cout << "Lexical analysis failed" << std::endl;
       return 1;
   }
-  
+
   // print key, value pairs
   for (auto p : cpp_properties) {
       std::cout << p.first << '=' << p.second << std::endl;
@@ -89,7 +143,7 @@ Many more examples are availables in Example directory. It shows how to parse fo
 #==============================================================================
 # Copyright (c) 2015-2021 glywk
 # https://github.com/glywk
-# 
+#
 # Distributed under the Boost Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 #==============================================================================
@@ -123,9 +177,9 @@ simple
 ! -----------------------------------------------------------------------------
 ! Prefix / postfix key blanks are trimmed
 ! -----------------------------------------------------------------------------
-  trim.key1 
+  trim.key1
   trim.key2  value 2
-  trim.key3: 
+  trim.key3:
   trim.key4: value 4
   trim.key5=
   trim.key6= value 6
@@ -172,8 +226,8 @@ simple\ \=>\ escaped\:\
 ! Simple key with iso 8859-1 specific chars
 ! -----------------------------------------------------------------------------
 latin1.key.\\u00E9.expect.display(é).as.(\u00E9)
-latin1.key.\\u00E9.expect.display.escaped(\é).as.(\u00E9) 
- 
+latin1.key.\\u00E9.expect.display.escaped(\é).as.(\u00E9)
+
 ! -----------------------------------------------------------------------------
 ! Simple key with unicode chars
 ! -----------------------------------------------------------------------------
@@ -224,7 +278,7 @@ colon.separated10 \
 ! Key-value separated by equal char
 ! -----------------------------------------------------------------------------
 equal.separatedl=valuel
-equal.separated2 =value2 
+equal.separated2 =value2
 equal.separated3 = value3
 equal.separated4\
                 =value4
@@ -305,7 +359,7 @@ escape.value \=> escaped:\
 ! Simple value with iso 8859-1 specific chars
 ! -----------------------------------------------------------------------------
 latin1.value \\u00E9.expect.display(é).as.(\u00E9)
-latin1.value \\u00E9.expect.display.escaped(\é).as.(\u00E9) 
+latin1.value \\u00E9.expect.display.escaped(\é).as.(\u00E9)
 
 ! -----------------------------------------------------------------------------
 ! Simple value with unicode chars
@@ -330,7 +384,7 @@ comment.break.line.should.not.hide.this.key2=
 simple=
 trim.key1=
 trim.key2=value 2
-trim.key3= 
+trim.key3=
 trim.key4= value 4
 trim.key5=
 trim.key6= value 6
@@ -361,7 +415,7 @@ colon.separated9==value9.break.line.before.include.equals=
 colon.separated10==: value10.include.separator.chars :=
 =
 equal.separated1=value1
-equal.separated2=value2 
+equal.separated2=value2
 equal.separated3= value3
 equal.separated4=value4
 equal.separated5=value5
