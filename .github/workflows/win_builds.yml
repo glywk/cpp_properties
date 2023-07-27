@@ -18,7 +18,7 @@ jobs:
         build_type: [ Debug, Release ]
         std: [ 14 ]
 
-    runs-on: windows-2016
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v2
 
@@ -27,11 +27,11 @@ jobs:
 
       # Install dependencies
       - name: Install boost
-        uses: MarkusJx/install-boost@v2.0.0
+        uses: MarkusJx/install-boost@v2.4.4
         id: install-boost
         with:
-          boost_version: 1.76.0
-          platform_version: 2016
+          boost_version: 1.78.0
+          platform_version: 2022
 
       - name: Configure cmake
         working-directory: ${{runner.workspace}}

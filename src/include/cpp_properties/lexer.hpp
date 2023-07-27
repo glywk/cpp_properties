@@ -60,7 +60,7 @@ namespace token
         ID_VALUE_ESCAPE_CHAR,
         ID_VALUE_UNICODE,
         ID_VALUE_BAD_UNICODE,
-		ID_VALUE_CR,
+        ID_VALUE_CR,
         ID_VALUE_LF,
         ID_VALUE_EOL,
         ID_VALUE_LINE_BREAK_CR,
